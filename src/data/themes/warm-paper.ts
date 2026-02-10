@@ -1,0 +1,97 @@
+import type { Theme } from '../../types/theme'
+
+export const warmPaper: Theme = {
+  id: 'warm-paper',
+  name: 'Warm Paper',
+  colors: {
+    background: '#f5f0e8',
+    keyDefault: {
+      fill: '#faf6ee',
+      stroke: '#d4c9b5',
+      textColor: '#44403c',
+      strokeWidth: 1,
+      borderRadius: 4,
+      opacity: 1,
+    },
+    keyStyles: {
+      modifier: {
+        fill: '#e7e2d6',
+        stroke: '#8d8272',
+        textColor: '#57534e',
+        strokeWidth: 1.5,
+      },
+      'layer-toggle': {
+        fill: '#ede4f5',
+        stroke: '#8b5cf6',
+        textColor: '#6d28d9',
+        strokeWidth: 1.5,
+      },
+      'layer-tap': {
+        fill: '#e0eff5',
+        stroke: '#2e9ac0',
+        textColor: '#155e75',
+        strokeWidth: 1.5,
+      },
+      'mod-tap': {
+        fill: '#f5ede0',
+        stroke: '#b8860b',
+        textColor: '#78350f',
+        strokeWidth: 1.5,
+      },
+      transparent: {
+        fill: '#f2ede4',
+        stroke: '#a39585',
+        textColor: '#a8a29e',
+        strokeWidth: 1,
+        strokeDasharray: '3 2',
+        opacity: 0.85,
+      },
+      none: {
+        fill: '#f2ede4',
+        stroke: '#a39585',
+        textColor: '#d6d3d1',
+        strokeWidth: 1,
+        strokeDasharray: '2 2',
+        opacity: 0.7,
+      },
+      function: {
+        fill: '#f5e0e0',
+        stroke: '#c0392b',
+        textColor: '#8e2b2b',
+        strokeWidth: 1.5,
+      },
+      navigation: {
+        fill: '#e0f5e8',
+        stroke: '#27ae60',
+        textColor: '#2b6e44',
+        strokeWidth: 1.5,
+      },
+      media: {
+        fill: '#f5ebe0',
+        stroke: '#e67e22',
+        textColor: '#8e5a2b',
+        strokeWidth: 1.5,
+      },
+    },
+    layerLabelColors: ['#7c6f9e', '#c49858', '#6e9e7c', '#c45858', '#9e6fb8', '#58a4c4', '#c47858', '#c458a4'],
+    legendColors: {
+      primary: '#44403c',
+      secondary: '#78716c',
+      hold: '#7c3aed',
+    },
+  },
+  typography: {
+    fontFamily: "'Georgia', 'Palatino', 'Times New Roman', serif",
+    primaryLabelSize: 12,
+    secondaryLabelSize: 8,
+    holdLabelSize: 7,
+  },
+  layout: {
+    keyUnit: 56,
+    keyPadding: 7,
+    keyGap: 3,
+    borderRadius: 4,
+    splitGap: 28,
+  },
+  source: 'builtin',
+}

@@ -1,0 +1,97 @@
+import type { Theme } from '../../types/theme'
+
+export const cleanLight: Theme = {
+  id: 'clean-light',
+  name: 'Clean Light',
+  colors: {
+    background: '#f0f0f0',
+    keyDefault: {
+      fill: '#ffffff',
+      stroke: '#d1d5db',
+      textColor: '#1f2937',
+      strokeWidth: 1,
+      borderRadius: 6,
+      opacity: 1,
+    },
+    keyStyles: {
+      modifier: {
+        fill: '#e2e8f0',
+        stroke: '#64748b',
+        textColor: '#334155',
+        strokeWidth: 1.5,
+      },
+      'layer-toggle': {
+        fill: '#ede9fe',
+        stroke: '#7c3aed',
+        textColor: '#5b21b6',
+        strokeWidth: 1.5,
+      },
+      'layer-tap': {
+        fill: '#e0f2fe',
+        stroke: '#0ea5e9',
+        textColor: '#0369a1',
+        strokeWidth: 1.5,
+      },
+      'mod-tap': {
+        fill: '#fef9c3',
+        stroke: '#ca8a04',
+        textColor: '#854d0e',
+        strokeWidth: 1.5,
+      },
+      transparent: {
+        fill: '#f9fafb',
+        stroke: '#9ca3af',
+        textColor: '#9ca3af',
+        strokeWidth: 1,
+        strokeDasharray: '4 2',
+        opacity: 0.85,
+      },
+      none: {
+        fill: '#f9fafb',
+        stroke: '#9ca3af',
+        textColor: '#d1d5db',
+        strokeWidth: 1,
+        strokeDasharray: '2 2',
+        opacity: 0.7,
+      },
+      function: {
+        fill: '#fee2e2',
+        stroke: '#ef4444',
+        textColor: '#991b1b',
+        strokeWidth: 1.5,
+      },
+      navigation: {
+        fill: '#d1fae5',
+        stroke: '#10b981',
+        textColor: '#065f46',
+        strokeWidth: 1.5,
+      },
+      media: {
+        fill: '#ffedd5',
+        stroke: '#f97316',
+        textColor: '#9a3412',
+        strokeWidth: 1.5,
+      },
+    },
+    layerLabelColors: ['#6366f1', '#f59e0b', '#10b981', '#ef4444', '#8b5cf6', '#06b6d4', '#f97316', '#ec4899'],
+    legendColors: {
+      primary: '#1f2937',
+      secondary: '#6b7280',
+      hold: '#9333ea',
+    },
+  },
+  typography: {
+    fontFamily: "'Inter', 'SF Pro Display', -apple-system, sans-serif",
+    primaryLabelSize: 12,
+    secondaryLabelSize: 8,
+    holdLabelSize: 7,
+  },
+  layout: {
+    keyUnit: 54,
+    keyPadding: 6,
+    keyGap: 4,
+    borderRadius: 6,
+    splitGap: 30,
+  },
+  source: 'builtin',
+}

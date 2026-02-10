@@ -1,0 +1,97 @@
+import type { Theme } from '../../types/theme'
+
+export const highContrast: Theme = {
+  id: 'high-contrast',
+  name: 'High Contrast',
+  colors: {
+    background: '#ffffff',
+    keyDefault: {
+      fill: '#ffffff',
+      stroke: '#000000',
+      textColor: '#000000',
+      strokeWidth: 2,
+      borderRadius: 4,
+      opacity: 1,
+    },
+    keyStyles: {
+      modifier: {
+        fill: '#d4d4d4',
+        stroke: '#000000',
+        textColor: '#000000',
+        strokeWidth: 2,
+      },
+      'layer-toggle': {
+        fill: '#b8b8c0',
+        stroke: '#000000',
+        textColor: '#000000',
+        strokeWidth: 2.5,
+      },
+      'layer-tap': {
+        fill: '#e8e8e8',
+        stroke: '#000000',
+        textColor: '#000000',
+        strokeWidth: 2,
+      },
+      'mod-tap': {
+        fill: '#f0f0e0',
+        stroke: '#000000',
+        textColor: '#000000',
+        strokeWidth: 2,
+      },
+      transparent: {
+        fill: '#ffffff',
+        stroke: '#555555',
+        textColor: '#888888',
+        strokeWidth: 1.5,
+        strokeDasharray: '6 3',
+        opacity: 0.85,
+      },
+      none: {
+        fill: '#ffffff',
+        stroke: '#666666',
+        textColor: '#aaaaaa',
+        strokeWidth: 1.5,
+        strokeDasharray: '3 3',
+        opacity: 0.75,
+      },
+      function: {
+        fill: '#ffe0e0',
+        stroke: '#000000',
+        textColor: '#000000',
+        strokeWidth: 2,
+      },
+      navigation: {
+        fill: '#e0ffe0',
+        stroke: '#000000',
+        textColor: '#000000',
+        strokeWidth: 2,
+      },
+      media: {
+        fill: '#fff0e0',
+        stroke: '#000000',
+        textColor: '#000000',
+        strokeWidth: 2,
+      },
+    },
+    layerLabelColors: ['#000000', '#444444', '#666666', '#888888', '#333333', '#555555', '#777777', '#999999'],
+    legendColors: {
+      primary: '#000000',
+      secondary: '#444444',
+      hold: '#666666',
+    },
+  },
+  typography: {
+    fontFamily: "'Arial', 'Helvetica', sans-serif",
+    primaryLabelSize: 13,
+    secondaryLabelSize: 8.5,
+    holdLabelSize: 7.5,
+  },
+  layout: {
+    keyUnit: 54,
+    keyPadding: 6,
+    keyGap: 4,
+    borderRadius: 4,
+    splitGap: 30,
+  },
+  source: 'builtin',
+}
