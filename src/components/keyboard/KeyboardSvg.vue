@@ -28,7 +28,8 @@ const bounds = computed(() => computeLayoutBounds(
 ))
 
 const viewBox = computed(() => {
-  return `${-padding} ${-padding} ${bounds.value.width + padding * 2} ${bounds.value.height + padding * 2}`
+  const b = bounds.value
+  return `${b.minX - padding} ${b.minY - padding} ${b.width + padding * 2} ${b.height + padding * 2}`
 })
 
 const svgWidth = computed(() => bounds.value.width + padding * 2)
