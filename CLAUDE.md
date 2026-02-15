@@ -5,9 +5,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-npm run dev        # Start Vite dev server (default port 5173)
-npm run build      # Type-check (vue-tsc) then build for production
-npx vue-tsc -b     # Type-check only (no lint/test tooling configured)
+pnpm dev           # Start Vite dev server (default port 5173)
+pnpm build         # Type-check (vue-tsc) then build for production
+pnpm vue-tsc -b    # Type-check only (no lint/test tooling configured)
 ```
 
 No test framework, linter, or formatter is configured.

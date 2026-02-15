@@ -22,8 +22,8 @@ Built for the custom keyboard community (Corne, Sweep, Lily58, Planck, etc.) who
 ## Getting Started
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
 
 Open [http://localhost:5173](http://localhost:5173) in your browser.
@@ -31,8 +31,8 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 ## Build
 
 ```bash
-npm run build     # Type-check + production build
-npm run preview   # Preview the production build
+pnpm build        # Type-check + production build
+pnpm preview      # Preview the production build
 ```
 
 ## Tech Stack
