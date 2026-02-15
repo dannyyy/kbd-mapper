@@ -1,7 +1,7 @@
 import type { PhysicalLayout } from "../../types/layout";
 
-const LEFT_STAGGER = [0, -0.125, -0.25, -0.125, 0];
-const RIGHT_STAGGER = [-0.125, -0.25, -0.125, 0, 0];
+const LEFT_STAGGER = [0.3, 0.1, 0, 0.1, 0.2];
+const RIGHT_STAGGER = [0.2, 0.1, 0, 0.1, 0.3];
 
 function leftKeys() {
   const keys: Array<{ x: number; y: number }> = [];
@@ -11,7 +11,7 @@ function leftKeys() {
     }
   }
   // 3 thumb keys
-  keys.push({ x: 2, y: 3.25 }, { x: 3, y: 3.0 }, { x: 4, y: 2.75 });
+  keys.push({ x: 3, y: 3.7 }, { x: 4, y: 3.7 }, { x: 5, y: 3.2 });
   return keys;
 }
 
@@ -24,9 +24,9 @@ function rightKeys() {
     }
   }
   keys.push(
-    { x: offset, y: 2.75 },
-    { x: offset + 1, y: 3.0 },
-    { x: offset + 2, y: 3.25 },
+    { x: offset, y: 3.2 },
+    { x: offset + 1, y: 3.7 },
+    { x: offset + 2, y: 3.7 },
   );
   return keys;
 }

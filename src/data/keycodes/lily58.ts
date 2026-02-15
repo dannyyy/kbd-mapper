@@ -1,10 +1,10 @@
 import { key, mod, nav, fn, media, lt, none, trans } from "./helpers";
 import type { KeyBinding } from "../../types/keymap";
 
-// Lily58 default QWERTY keymap: 56 keys
+// Lily58 default QWERTY keymap: 58 keys
 // Based on the official QMK Lily58 default keymap
-// Left: 24 matrix (4 rows x 6 cols, indices 0-23) + 4 thumb (indices 24-27) = 28
-// Right: 24 matrix (4 rows x 6 cols, indices 28-51) + 4 thumb (indices 52-55) = 28
+// Left: 24 matrix (4 rows x 6 cols) + 1 inner + 4 thumb = 29
+// Right: 24 matrix (4 rows x 6 cols) + 1 inner + 4 thumb = 29
 
 // Layer 0: Base
 export const lily58Base: KeyBinding[] = [
@@ -36,6 +36,8 @@ export const lily58Base: KeyBinding[] = [
   key("C"),
   key("V"),
   key("B"),
+  // Left inner
+  key("["),
   // Left thumb
   none(),
   mod("Alt"),
@@ -70,6 +72,8 @@ export const lily58Base: KeyBinding[] = [
   key("."),
   key("/"),
   mod("Shift"),
+  // Right inner
+  key("]"),
   // Right thumb
   lt("Ent", "L3"),
   key("Bksp"),
@@ -107,6 +111,8 @@ export const lily58Shift: KeyBinding[] = [
   key("C"),
   key("V"),
   key("B"),
+  // Left inner
+  key("{"),
   // Left thumb
   trans(),
   trans(),
@@ -141,6 +147,8 @@ export const lily58Shift: KeyBinding[] = [
   key(">"),
   key("?"),
   trans(),
+  // Right inner
+  key("}"),
   // Right thumb
   trans(),
   trans(),
@@ -178,6 +186,8 @@ export const lily58Lower: KeyBinding[] = [
   none(),
   key("_"),
   key("+"),
+  // Left inner
+  none(),
   // Left thumb
   none(),
   trans(),
@@ -212,6 +222,8 @@ export const lily58Lower: KeyBinding[] = [
   key("{"),
   key("}"),
   key("|"),
+  // Right inner
+  none(),
   // Right thumb
   trans(),
   trans(),
@@ -249,6 +261,8 @@ export const lily58Raise: KeyBinding[] = [
   fn("F10"),
   fn("F11"),
   fn("F12"),
+  // Left inner
+  none(),
   // Left thumb
   none(),
   trans(),
@@ -283,6 +297,8 @@ export const lily58Raise: KeyBinding[] = [
   key("["),
   key("]"),
   key("\\"),
+  // Right inner
+  none(),
   // Right thumb
   trans(),
   trans(),
@@ -320,6 +336,8 @@ export const lily58Nav: KeyBinding[] = [
   none(),
   none(),
   none(),
+  // Left inner
+  none(),
   // Left thumb
   none(),
   trans(),
@@ -353,6 +371,8 @@ export const lily58Nav: KeyBinding[] = [
   media("Mute"),
   media("Vol+"),
   none(),
+  none(),
+  // Right inner
   none(),
   // Right thumb
   trans(),

@@ -1,8 +1,8 @@
 import type { PhysicalLayout } from "../../types/layout";
 
 // Ferris Sweep: 34 keys, 3x5+2 per side, aggressive columnar stagger
-const LEFT_STAGGER = [0, -0.2, -0.4, -0.2, -0.1];
-const RIGHT_STAGGER = [-0.1, -0.2, -0.4, -0.2, 0];
+const LEFT_STAGGER = [0.93, 0.31, 0, 0.28, 0.42];
+const RIGHT_STAGGER = [0.42, 0.28, 0, 0.31, 0.93];
 
 function leftKeys() {
   const keys: Array<{ x: number; y: number }> = [];
@@ -12,7 +12,7 @@ function leftKeys() {
     }
   }
   // 2 thumb keys
-  keys.push({ x: 3, y: 3.0 }, { x: 4, y: 2.75 });
+  keys.push({ x: 3.5, y: 3.75 }, { x: 4.5, y: 4.0 });
   return keys;
 }
 
@@ -24,7 +24,7 @@ function rightKeys() {
       keys.push({ x: offset + col, y: row + RIGHT_STAGGER[col]! });
     }
   }
-  keys.push({ x: offset, y: 2.75 }, { x: offset + 1, y: 3.0 });
+  keys.push({ x: offset - 0.5, y: 4.0 }, { x: offset + 0.5, y: 3.75 });
   return keys;
 }
 

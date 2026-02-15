@@ -1,9 +1,9 @@
 import { key, mod, nav, fn, media, lt, none, trans } from "./helpers";
 import type { KeyBinding } from "../../types/keymap";
 
-// Kyria default QWERTY: 46 keys
-// Left: 18 matrix (3 rows × 6 cols) + 5 thumb = 23
-// Right: 18 matrix (3 rows × 6 cols) + 5 thumb = 23
+// Kyria default QWERTY: 50 keys
+// Left: 18 matrix (3 rows × 6 cols) + 2 inner + 5 thumb = 25
+// Right: 18 matrix (3 rows × 6 cols) + 2 inner + 5 thumb = 25
 
 // Layer 0: Base
 export const kyriaBase: KeyBinding[] = [
@@ -28,6 +28,9 @@ export const kyriaBase: KeyBinding[] = [
   key("C"),
   key("V"),
   key("B"),
+  // Left inner keys
+  key("["),
+  key("]"),
   // Left thumb
   none(),
   mod("GUI"),
@@ -56,6 +59,9 @@ export const kyriaBase: KeyBinding[] = [
   key("."),
   key("/"),
   mod("Shift"),
+  // Right inner keys
+  key("-"),
+  key("="),
   // Right thumb
   lt("Bksp", "L4"),
   lt("Ent", "L2"),
@@ -87,6 +93,9 @@ export const kyriaShift: KeyBinding[] = [
   key("C"),
   key("V"),
   key("B"),
+  // Left inner keys
+  key("{"),
+  key("}"),
   // Left thumb
   trans(),
   trans(),
@@ -115,6 +124,9 @@ export const kyriaShift: KeyBinding[] = [
   key(">"),
   key("?"),
   trans(),
+  // Right inner keys
+  key("_"),
+  key("+"),
   // Right thumb
   trans(),
   trans(),
@@ -146,6 +158,9 @@ export const kyriaLower: KeyBinding[] = [
   key("["),
   key("]"),
   none(),
+  // Left inner keys
+  none(),
+  none(),
   // Left thumb
   none(),
   trans(),
@@ -174,6 +189,9 @@ export const kyriaLower: KeyBinding[] = [
   key("<"),
   key(">"),
   key("?"),
+  // Right inner keys
+  none(),
+  none(),
   // Right thumb
   trans(),
   trans(),
@@ -205,6 +223,9 @@ export const kyriaRaise: KeyBinding[] = [
   fn("F9"),
   fn("F10"),
   fn("F11"),
+  // Left inner keys
+  none(),
+  none(),
   // Left thumb
   none(),
   trans(),
@@ -233,6 +254,9 @@ export const kyriaRaise: KeyBinding[] = [
   key("."),
   none(),
   trans(),
+  // Right inner keys
+  none(),
+  none(),
   // Right thumb
   trans(),
   trans(),
@@ -264,6 +288,9 @@ export const kyriaNav: KeyBinding[] = [
   none(),
   none(),
   none(),
+  // Left inner keys
+  none(),
+  none(),
   // Left thumb
   none(),
   trans(),
@@ -292,6 +319,9 @@ export const kyriaNav: KeyBinding[] = [
   media("Vol+"),
   none(),
   trans(),
+  // Right inner keys
+  none(),
+  none(),
   // Right thumb
   trans(),
   trans(),

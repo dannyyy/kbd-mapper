@@ -153,8 +153,17 @@ export function useExport() {
       "http://www.w3.org/2000/svg",
       "rect",
     );
-    bgRect.setAttribute("width", svg.getAttribute("width") || "100%");
-    bgRect.setAttribute("height", svg.getAttribute("height") || "100%");
+    const vb = svg.getAttribute("viewBox");
+    if (vb) {
+      const [x, y, w, h] = vb.split(/\s+/).map(Number);
+      bgRect.setAttribute("x", String(x));
+      bgRect.setAttribute("y", String(y));
+      bgRect.setAttribute("width", String(w));
+      bgRect.setAttribute("height", String(h));
+    } else {
+      bgRect.setAttribute("width", svg.getAttribute("width") || "100%");
+      bgRect.setAttribute("height", svg.getAttribute("height") || "100%");
+    }
     bgRect.setAttribute("fill", color);
     svg.insertBefore(bgRect, svg.firstChild);
   }
