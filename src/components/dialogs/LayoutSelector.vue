@@ -1,80 +1,33 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useEditorStore } from '../../stores/editor'
 import { useProjectStore } from '../../stores/project'
 import { builtinLayouts } from '../../data/layouts'
-import type { KeyPosition } from '../../types/layout'
-import type { KeyBinding } from '../../types/keymap'
+import { getDefaultKeymapData } from '../../data/keycodes'
+import { generateId } from '../../utils/id'
+import { getLayerColor, createEmptyBinding } from '../../utils/defaults'
+import { downloadText } from '../../utils/download'
 import BaseModal from '../ui/BaseModal.vue'
 
 const editorStore = useEditorStore()
 const projectStore = useProjectStore()
 
-function keyCenter(k: KeyPosition): [number, number] {
-  return [k.x + (k.w ?? 1) / 2, k.y + (k.h ?? 1) / 2]
-}
-
-function layoutBounds(keys: KeyPosition[]) {
-  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity
-  for (const k of keys) {
-    const cx = k.x + (k.w ?? 1) / 2
-    const cy = k.y + (k.h ?? 1) / 2
-    minX = Math.min(minX, cx)
-    maxX = Math.max(maxX, cx)
-    minY = Math.min(minY, cy)
-    maxY = Math.max(maxY, cy)
-  }
-  return { minX, maxX, minY, maxY }
-}
-
-function normalizedCenters(keys: KeyPosition[]): [number, number][] {
-  const b = layoutBounds(keys)
-  const w = Math.max(b.maxX - b.minX, 0.001)
-  const h = Math.max(b.maxY - b.minY, 0.001)
-  return keys.map(k => {
-    const [cx, cy] = keyCenter(k)
-    return [(cx - b.minX) / w, (cy - b.minY) / h]
-  })
-}
-
-function buildSpatialMapping(oldKeys: KeyPosition[], newKeys: KeyPosition[]): number[] {
-  const oldNorm = normalizedCenters(oldKeys)
-  const newNorm = normalizedCenters(newKeys)
-
-  const mapping: number[] = new Array(newKeys.length).fill(-1)
-
-  // Build candidate pairs sorted by distance
-  const pairs: { newIdx: number; oldIdx: number; dist: number }[] = []
-  for (let ni = 0; ni < newNorm.length; ni++) {
-    for (let oi = 0; oi < oldNorm.length; oi++) {
-      const dx = newNorm[ni]![0] - oldNorm[oi]![0]
-      const dy = newNorm[ni]![1] - oldNorm[oi]![1]
-      pairs.push({ newIdx: ni, oldIdx: oi, dist: dx * dx + dy * dy })
-    }
-  }
-  pairs.sort((a, b) => a.dist - b.dist)
-
-  // Greedy 1:1 assignment - closest pairs first
-  const assignedNew = new Set<number>()
-  const usedOld = new Set<number>()
-  for (const p of pairs) {
-    if (assignedNew.has(p.newIdx) || usedOld.has(p.oldIdx)) continue
-    if (p.dist > 0.08) continue // ~28% of layout extent
-    mapping[p.newIdx] = p.oldIdx
-    assignedNew.add(p.newIdx)
-    usedOld.add(p.oldIdx)
-  }
-
-  return mapping
-}
+const pendingLayoutId = ref<string | null>(null)
 
 function selectLayout(layoutId: string) {
+  if (layoutId === projectStore.project.layout.id) return
+
+  if (projectStore.hasKeymapChanged()) {
+    pendingLayoutId.value = layoutId
+  } else {
+    applyLayout(layoutId)
+  }
+}
+
+function applyLayout(layoutId: string) {
   const newLayout = builtinLayouts.find(l => l.id === layoutId)
   if (!newLayout) return
 
-  const oldLayout = projectStore.project.layout
-  const mapping = buildSpatialMapping(oldLayout.keys, newLayout.keys)
-
-  // Clone to prevent pinia-persist hydration from mutating the builtin object
   projectStore.project.layout = {
     ...newLayout,
     keys: newLayout.keys.map(k => ({ ...k })),
@@ -82,25 +35,46 @@ function selectLayout(layoutId: string) {
     metadata: { ...newLayout.metadata, tags: newLayout.metadata.tags ? [...newLayout.metadata.tags] : undefined },
   }
 
-  for (let li = 0; li < projectStore.layers.length; li++) {
-    const oldBindings = [...projectStore.layers[li]!.bindings]
-    const isBase = li === 0
-    const emptyBinding: KeyBinding = isBase
-      ? { label: '', type: 'normal' }
-      : { label: '▽', type: 'transparent' }
-
-    const newBindings: KeyBinding[] = new Array(newLayout.keys.length)
-    for (let ki = 0; ki < newLayout.keys.length; ki++) {
-      const oldIdx = mapping[ki]!
-      newBindings[ki] = oldIdx >= 0 && oldIdx < oldBindings.length
-        ? { ...oldBindings[oldIdx]! }
-        : { ...emptyBinding }
-    }
-    projectStore.layers[li]!.bindings = newBindings
+  const defaultKeymap = getDefaultKeymapData(layoutId)
+  if (defaultKeymap) {
+    projectStore.project.keymap.layers = defaultKeymap.layers.map((layer, i) => ({
+      id: generateId('layer'),
+      name: layer.name,
+      color: getLayerColor(i),
+      bindings: layer.bindings.map(b => ({ ...b })),
+      visible: true,
+    }))
+  } else {
+    projectStore.project.keymap.layers = [{
+      id: generateId('layer'),
+      name: 'Base',
+      color: getLayerColor(0),
+      bindings: Array.from({ length: newLayout.keys.length }, () => createEmptyBinding()),
+      visible: true,
+    }]
   }
 
+  projectStore.markKeymapSaved()
   editorStore.clearSelection()
   editorStore.showLayoutSelector = false
+}
+
+function confirmSwitch() {
+  if (pendingLayoutId.value) {
+    applyLayout(pendingLayoutId.value)
+  }
+  pendingLayoutId.value = null
+}
+
+function cancelSwitch() {
+  pendingLayoutId.value = null
+}
+
+function saveAndSwitch() {
+  const json = projectStore.getProjectJson()
+  downloadText(json, `${projectStore.project.name}.json`, 'application/json')
+  projectStore.markKeymapSaved()
+  confirmSwitch()
 }
 </script>
 
@@ -124,6 +98,24 @@ function selectLayout(layoutId: string) {
           <span v-for="tag in layout.metadata.tags" :key="tag" class="tag">{{ tag }}</span>
         </div>
       </button>
+    </div>
+  </BaseModal>
+
+  <!-- Confirmation dialog -->
+  <BaseModal
+    title="Unsaved Changes"
+    :show="pendingLayoutId !== null"
+    @close="cancelSwitch"
+  >
+    <div class="confirm-content">
+      <p class="confirm-message">
+        You have unsaved changes to your key mappings. Do you want to save before switching layouts?
+      </p>
+      <div class="confirm-actions">
+        <button class="confirm-btn btn-secondary" @click="cancelSwitch">Cancel</button>
+        <button class="confirm-btn btn-save" @click="saveAndSwitch">Save &amp; Switch</button>
+        <button class="confirm-btn btn-primary" @click="confirmSwitch">Switch</button>
+      </div>
     </div>
   </BaseModal>
 </template>
@@ -181,5 +173,63 @@ function selectLayout(layoutId: string) {
   background: var(--surface-secondary, #f3f4f6);
   color: var(--text-secondary, #6b7280);
   border-radius: 3px;
+}
+
+.confirm-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.confirm-message {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-primary, #1f2937);
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.confirm-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.btn-secondary {
+  background: var(--surface, #fff);
+  color: var(--text-primary, #1f2937);
+}
+
+.btn-secondary:hover {
+  background: var(--surface-secondary, #f3f4f6);
+}
+
+.btn-save {
+  background: var(--surface, #fff);
+  color: #059669;
+  border-color: #059669;
+}
+
+.btn-save:hover {
+  background: #ecfdf5;
+}
+
+.btn-primary {
+  background: #3b82f6;
+  color: #fff;
+  border-color: #3b82f6;
+}
+
+.btn-primary:hover {
+  background: #2563eb;
 }
 </style>

@@ -29,6 +29,7 @@ function handleKeydown(e: KeyboardEvent) {
     e.preventDefault()
     const json = projectStore.getProjectJson()
     downloadText(json, `${projectStore.project.name}.json`, 'application/json')
+    projectStore.markKeymapSaved()
     return
   }
 

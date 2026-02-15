@@ -1,27 +1,35 @@
 import { key, mod, nav, fn, media, lt, none, trans } from "./helpers";
 import type { KeyBinding } from "../../types/keymap";
 
-export { key, mod, nav, fn, media, lt, none, trans } from "./helpers";
+// Lily58 default QWERTY keymap: 56 keys
+// Based on the official QMK Lily58 default keymap
+// Left: 24 matrix (4 rows x 6 cols, indices 0-23) + 4 thumb (indices 24-27) = 28
+// Right: 24 matrix (4 rows x 6 cols, indices 28-51) + 4 thumb (indices 52-55) = 28
 
-// Corne 3x6+3 default QWERTY: 42 keys
-// Left: 18 matrix + 3 thumb = 21
-// Right: 18 matrix + 3 thumb = 21
-export const corneQwertyBase: KeyBinding[] = [
+// Layer 0: Base
+export const lily58Base: KeyBinding[] = [
   // Left row 0
+  key("Esc"),
+  key("1"),
+  key("2"),
+  key("3"),
+  key("4"),
+  key("5"),
+  // Left row 1
   key("Tab"),
   key("Q"),
   key("W"),
   key("E"),
   key("R"),
   key("T"),
-  // Left row 1
+  // Left row 2
   mod("Ctrl"),
   key("A"),
   key("S"),
   key("D"),
   key("F"),
   key("G"),
-  // Left row 2
+  // Left row 3
   mod("Shift"),
   key("Z"),
   key("X"),
@@ -29,25 +37,33 @@ export const corneQwertyBase: KeyBinding[] = [
   key("V"),
   key("B"),
   // Left thumb
+  none(),
+  mod("Alt"),
   mod("GUI"),
-  lt("Bksp", "L2"),
-  lt("Del", "L3"),
+  lt("Spc", "L2"),
 
   // Right row 0
+  key("6"),
+  key("7"),
+  key("8"),
+  key("9"),
+  key("0"),
+  key("`"),
+  // Right row 1
   key("Y"),
   key("U"),
   key("I"),
   key("O"),
   key("P"),
-  key("\\"),
-  // Right row 1
+  key("-"),
+  // Right row 2
   key("H"),
   key("J"),
   key("K"),
   key("L"),
   key(";"),
   key("'"),
-  // Right row 2
+  // Right row 3
   key("N"),
   key("M"),
   key(","),
@@ -55,27 +71,36 @@ export const corneQwertyBase: KeyBinding[] = [
   key("/"),
   mod("Shift"),
   // Right thumb
-  lt("Ent", "L4"),
-  lt("Spc", "L2"),
-  mod("Alt"),
+  lt("Ent", "L3"),
+  key("Bksp"),
+  mod("GUI"),
+  none(),
 ];
 
-export const corneShiftLayer: KeyBinding[] = [
+// Layer 1: Shift
+export const lily58Shift: KeyBinding[] = [
   // Left row 0
+  trans(),
+  key("!"),
+  key("@"),
+  key("#"),
+  key("$"),
+  key("%"),
+  // Left row 1
   trans(),
   key("Q"),
   key("W"),
   key("E"),
   key("R"),
   key("T"),
-  // Left row 1
+  // Left row 2
   trans(),
   key("A"),
   key("S"),
   key("D"),
   key("F"),
   key("G"),
-  // Left row 2
+  // Left row 3
   trans(),
   key("Z"),
   key("X"),
@@ -84,59 +109,6 @@ export const corneShiftLayer: KeyBinding[] = [
   key("B"),
   // Left thumb
   trans(),
-  trans(),
-  trans(),
-
-  // Right row 0
-  key("Y"),
-  key("U"),
-  key("I"),
-  key("O"),
-  key("P"),
-  key("|"),
-  // Right row 1
-  key("H"),
-  key("J"),
-  key("K"),
-  key("L"),
-  key(":"),
-  key('"'),
-  // Right row 2
-  key("N"),
-  key("M"),
-  key("<"),
-  key(">"),
-  key("?"),
-  trans(),
-  // Right thumb
-  trans(),
-  trans(),
-  trans(),
-];
-
-export const corneSymbolLayer: KeyBinding[] = [
-  // Left row 0
-  key("Esc"),
-  key("!"),
-  key("@"),
-  key("#"),
-  key("$"),
-  key("%"),
-  // Left row 1
-  trans(),
-  key("`"),
-  key("~"),
-  key("("),
-  key(")"),
-  key("|"),
-  // Left row 2
-  trans(),
-  none(),
-  none(),
-  key("["),
-  key("]"),
-  none(),
-  // Left thumb
   trans(),
   trans(),
   trans(),
@@ -145,63 +117,151 @@ export const corneSymbolLayer: KeyBinding[] = [
   key("^"),
   key("&"),
   key("*"),
-  key("-"),
-  key("="),
-  key("+"),
+  key("("),
+  key(")"),
+  key("~"),
   // Right row 1
-  key("←"),
-  key("↓"),
-  key("↑"),
-  key("→"),
+  key("Y"),
+  key("U"),
+  key("I"),
+  key("O"),
+  key("P"),
+  key("_"),
+  // Right row 2
+  key("H"),
+  key("J"),
+  key("K"),
+  key("L"),
   key(":"),
   key('"'),
-  // Right row 2
-  none(),
-  key("{"),
-  key("}"),
+  // Right row 3
+  key("N"),
+  key("M"),
   key("<"),
   key(">"),
   key("?"),
+  trans(),
   // Right thumb
+  trans(),
   trans(),
   trans(),
   trans(),
 ];
 
-export const corneNumberLayer: KeyBinding[] = [
+// Layer 2: Lower
+export const lily58Lower: KeyBinding[] = [
   // Left row 0
+  trans(),
+  trans(),
+  trans(),
+  trans(),
+  trans(),
+  trans(),
+  // Left row 1
   fn("F1"),
   fn("F2"),
   fn("F3"),
   fn("F4"),
   fn("F5"),
   fn("F6"),
-  // Left row 1
-  trans(),
-  key("1"),
-  key("2"),
-  key("3"),
-  key("4"),
-  key("5"),
   // Left row 2
+  key("`"),
+  key("!"),
+  key("@"),
+  key("#"),
+  key("$"),
+  key("%"),
+  // Left row 3
   trans(),
   none(),
   none(),
   none(),
-  none(),
-  none(),
+  key("_"),
+  key("+"),
   // Left thumb
+  none(),
   trans(),
   trans(),
   trans(),
 
   // Right row 0
+  trans(),
+  trans(),
+  trans(),
+  trans(),
+  trans(),
+  trans(),
+  // Right row 1
   fn("F7"),
   fn("F8"),
   fn("F9"),
   fn("F10"),
   fn("F11"),
   fn("F12"),
+  // Right row 2
+  key("^"),
+  key("&"),
+  key("*"),
+  key("("),
+  key(")"),
+  key("~"),
+  // Right row 3
+  none(),
+  none(),
+  none(),
+  key("{"),
+  key("}"),
+  key("|"),
+  // Right thumb
+  trans(),
+  trans(),
+  trans(),
+  none(),
+];
+
+// Layer 3: Raise
+export const lily58Raise: KeyBinding[] = [
+  // Left row 0
+  trans(),
+  trans(),
+  trans(),
+  trans(),
+  trans(),
+  trans(),
+  // Left row 1
+  key("`"),
+  key("1"),
+  key("2"),
+  key("3"),
+  key("4"),
+  key("5"),
+  // Left row 2
+  fn("F1"),
+  fn("F2"),
+  fn("F3"),
+  fn("F4"),
+  fn("F5"),
+  fn("F6"),
+  // Left row 3
+  fn("F7"),
+  fn("F8"),
+  fn("F9"),
+  fn("F10"),
+  fn("F11"),
+  fn("F12"),
+  // Left thumb
+  none(),
+  trans(),
+  trans(),
+  trans(),
+
+  // Right row 0
+  trans(),
+  trans(),
+  trans(),
+  trans(),
+  trans(),
+  trans(),
   // Right row 1
   key("6"),
   key("7"),
@@ -211,18 +271,27 @@ export const corneNumberLayer: KeyBinding[] = [
   none(),
   // Right row 2
   none(),
+  nav("Left"),
+  nav("Down"),
+  nav("Up"),
+  nav("Right"),
   none(),
-  none(),
-  key("."),
-  none(),
-  trans(),
+  // Right row 3
+  key("+"),
+  key("-"),
+  key("="),
+  key("["),
+  key("]"),
+  key("\\"),
   // Right thumb
   trans(),
   trans(),
   trans(),
+  none(),
 ];
 
-export const corneNavLayer: KeyBinding[] = [
+// Layer 4: Nav
+export const lily58Nav: KeyBinding[] = [
   // Left row 0
   none(),
   none(),
@@ -231,83 +300,63 @@ export const corneNavLayer: KeyBinding[] = [
   none(),
   none(),
   // Left row 1
-  trans(),
+  none(),
   none(),
   none(),
   none(),
   none(),
   none(),
   // Left row 2
-  trans(),
+  none(),
+  none(),
+  none(),
+  none(),
+  none(),
+  none(),
+  // Left row 3
+  none(),
   none(),
   none(),
   none(),
   none(),
   none(),
   // Left thumb
+  none(),
   trans(),
   trans(),
   trans(),
 
   // Right row 0
   none(),
+  none(),
+  none(),
+  none(),
+  none(),
+  none(),
+  // Right row 1
+  none(),
   nav("PgUp"),
   nav("Up"),
   nav("PgDn"),
   none(),
   none(),
-  // Right row 1
+  // Right row 2
   nav("Home"),
   nav("Left"),
   nav("Down"),
   nav("Right"),
   nav("End"),
   none(),
-  // Right row 2
+  // Right row 3
   none(),
   media("Vol-"),
   media("Mute"),
   media("Vol+"),
   none(),
-  trans(),
+  none(),
   // Right thumb
   trans(),
   trans(),
   trans(),
+  none(),
 ];
-
-// All available keycodes for the autocomplete catalog
-export const keycodeCatalog = {
-  letters: "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z".split(" "),
-  numbers: "0 1 2 3 4 5 6 7 8 9".split(" "),
-  symbols:
-    "! @ # $ % ^ & * ( ) - = + [ ] { } \\ | ; : ' \" , . / < > ? ` ~".split(
-      " ",
-    ),
-  modifiers: ["Ctrl", "Shift", "Alt", "GUI", "Hyper", "Meh"],
-  navigation: [
-    "Up",
-    "Down",
-    "Left",
-    "Right",
-    "Home",
-    "End",
-    "PgUp",
-    "PgDn",
-    "Ins",
-  ],
-  editing: ["Bksp", "Del", "Ent", "Spc", "Tab", "Esc", "CapsLk"],
-  function: Array.from({ length: 24 }, (_, i) => `F${i + 1}`),
-  media: [
-    "Play",
-    "Pause",
-    "Stop",
-    "Next",
-    "Prev",
-    "Vol+",
-    "Vol-",
-    "Mute",
-    "Eject",
-  ],
-  layer: ["L0", "L1", "L2", "L3", "L4", "L5", "L6", "L7"],
-};

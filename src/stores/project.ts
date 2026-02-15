@@ -3,12 +3,7 @@ import { ref, computed } from "vue";
 import type { Project } from "../types/project";
 import type { Layer, KeyBinding, KeyType } from "../types/keymap";
 import { corne3x6 } from "../data/layouts";
-import {
-  corneQwertyBase,
-  corneSymbolLayer,
-  corneNumberLayer,
-  corneNavLayer,
-} from "../data/keycodes/basic";
+import { getDefaultKeymapData } from "../data/keycodes";
 import { generateId } from "../utils/id";
 import { getLayerColor, createEmptyBinding } from "../utils/defaults";
 
@@ -25,6 +20,27 @@ function cloneLayout(layout: typeof corne3x6) {
 }
 
 function createDefaultProject(): Project {
+  const defaultKeymap = getDefaultKeymapData("corne-3x6");
+  const layers: Layer[] = defaultKeymap
+    ? defaultKeymap.layers.map((layer, i) => ({
+        id: generateId("layer"),
+        name: layer.name,
+        color: getLayerColor(i),
+        bindings: layer.bindings.map((b) => ({ ...b })),
+        visible: true,
+      }))
+    : [
+        {
+          id: generateId("layer"),
+          name: "Base",
+          color: getLayerColor(0),
+          bindings: Array.from({ length: corne3x6.keys.length }, () =>
+            createEmptyBinding(),
+          ),
+          visible: true,
+        },
+      ];
+
   return {
     id: generateId("project"),
     name: "My Keyboard",
@@ -32,36 +48,7 @@ function createDefaultProject(): Project {
     keymap: {
       id: generateId("keymap"),
       name: "Default Keymap",
-      layers: [
-        {
-          id: generateId("layer"),
-          name: "Base",
-          color: getLayerColor(0),
-          bindings: corneQwertyBase,
-          visible: true,
-        },
-        {
-          id: generateId("layer"),
-          name: "Symbols",
-          color: getLayerColor(1),
-          bindings: corneSymbolLayer,
-          visible: true,
-        },
-        {
-          id: generateId("layer"),
-          name: "Numbers",
-          color: getLayerColor(2),
-          bindings: corneNumberLayer,
-          visible: true,
-        },
-        {
-          id: generateId("layer"),
-          name: "Nav",
-          color: getLayerColor(3),
-          bindings: corneNavLayer,
-          visible: true,
-        },
-      ],
+      layers,
     },
     themeId: "clean-light",
     settings: {
@@ -71,10 +58,25 @@ function createDefaultProject(): Project {
   };
 }
 
+function snapshotKeymap(p: Project): string {
+  return JSON.stringify(
+    p.keymap.layers.map((l) => ({
+      name: l.name,
+      bindings: l.bindings.map((b) => ({
+        label: b.label,
+        type: b.type,
+        holdLabel: b.holdLabel,
+        holdType: b.holdType,
+      })),
+    })),
+  );
+}
+
 export const useProjectStore = defineStore(
   "project",
   () => {
     const project = ref<Project>(createDefaultProject());
+    let _savedKeymapSnapshot = snapshotKeymap(project.value);
 
     const layers = computed(() => project.value.keymap.layers);
     const visibleLayers = computed(() => layers.value.filter((l) => l.visible));
@@ -176,12 +178,22 @@ export const useProjectStore = defineStore(
       project.value.settings.renderMode = mode;
     }
 
+    function hasKeymapChanged(): boolean {
+      return snapshotKeymap(project.value) !== _savedKeymapSnapshot;
+    }
+
+    function markKeymapSaved() {
+      _savedKeymapSnapshot = snapshotKeymap(project.value);
+    }
+
     function loadProject(data: Project) {
       project.value = data;
+      _savedKeymapSnapshot = snapshotKeymap(project.value);
     }
 
     function resetProject() {
       project.value = createDefaultProject();
+      _savedKeymapSnapshot = snapshotKeymap(project.value);
     }
 
     function getProjectJson(): string {
@@ -206,6 +218,8 @@ export const useProjectStore = defineStore(
       setKeyType,
       setKeyHold,
       setRenderMode,
+      hasKeymapChanged,
+      markKeymapSaved,
       loadProject,
       resetProject,
       getProjectJson,
@@ -215,6 +229,10 @@ export const useProjectStore = defineStore(
     persist: {
       key: "keyboard-show-off-project",
       pick: ["project"],
+      afterHydrate(ctx) {
+        const store = ctx.store as ReturnType<typeof useProjectStore>;
+        store.markKeymapSaved();
+      },
     },
   },
 );

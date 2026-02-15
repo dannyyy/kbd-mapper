@@ -9,6 +9,7 @@ const editorStore = useEditorStore()
 function handleSave() {
   const json = projectStore.getProjectJson()
   downloadText(json, `${projectStore.project.name}.json`, 'application/json')
+  projectStore.markKeymapSaved()
 }
 
 function handleLoad() {
