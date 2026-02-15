@@ -32,12 +32,7 @@ import {
   lily58Nav,
 } from "./lily58";
 
-import {
-  planckBase,
-  planckShift,
-  planckLower,
-  planckRaise,
-} from "./planck";
+import { planckBase, planckShift, planckLower, planckRaise } from "./planck";
 
 import {
   kyriaBase,
@@ -50,6 +45,8 @@ import {
 import { ansi60Base, ansi60Shift, ansi60Fn } from "./ansi60";
 
 import { ansiTklBase, ansiTklShift, ansiTklFn } from "./ansiTkl";
+
+import { irisBase, irisShift, irisLower, irisRaise, irisNav } from "./iris";
 
 export interface DefaultLayerData {
   name: string;
@@ -126,6 +123,33 @@ const registry: Record<string, DefaultKeymapData> = {
       { name: "Base", bindings: ansiTklBase },
       { name: "Shift", bindings: ansiTklShift },
       { name: "Fn", bindings: ansiTklFn },
+    ],
+  },
+  "iris-se": {
+    layers: [
+      { name: "Base", bindings: irisBase },
+      { name: "Shift", bindings: irisShift },
+      { name: "Lower", bindings: irisLower },
+      { name: "Raise", bindings: irisRaise },
+      { name: "Nav", bindings: irisNav },
+    ],
+  },
+  "iris-ce": {
+    layers: [
+      { name: "Base", bindings: irisBase },
+      { name: "Shift", bindings: irisShift },
+      { name: "Lower", bindings: irisLower },
+      { name: "Raise", bindings: irisRaise },
+      { name: "Nav", bindings: irisNav },
+    ],
+  },
+  "iris-lm": {
+    layers: [
+      { name: "Base", bindings: irisBase },
+      { name: "Shift", bindings: irisShift },
+      { name: "Lower", bindings: irisLower },
+      { name: "Raise", bindings: irisRaise },
+      { name: "Nav", bindings: irisNav },
     ],
   },
 };

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useEditorStore } from '../../stores/editor'
 import { useProjectStore } from '../../stores/project'
 import { builtinLayouts } from '../../data/layouts'
@@ -13,6 +13,17 @@ const editorStore = useEditorStore()
 const projectStore = useProjectStore()
 
 const pendingLayoutId = ref<string | null>(null)
+const searchQuery = ref('')
+
+const filteredLayouts = computed(() => {
+  const q = searchQuery.value.trim().toLowerCase()
+  if (!q) return builtinLayouts
+  return builtinLayouts.filter(layout =>
+    layout.name.toLowerCase().includes(q)
+    || layout.metadata.tags?.some(tag => tag.toLowerCase().includes(q))
+    || `${layout.keys.length}`.includes(q)
+  )
+})
 
 function selectLayout(layoutId: string) {
   if (layoutId === projectStore.project.layout.id) return
@@ -84,9 +95,17 @@ function saveAndSwitch() {
     :show="editorStore.showLayoutSelector"
     @close="editorStore.showLayoutSelector = false"
   >
+    <div class="layout-search">
+      <input
+        v-model="searchQuery"
+        type="text"
+        class="search-input"
+        placeholder="Search keyboards..."
+      />
+    </div>
     <div class="layout-grid">
       <button
-        v-for="layout in builtinLayouts"
+        v-for="layout in filteredLayouts"
         :key="layout.id"
         class="layout-card"
         :class="{ active: projectStore.layout.id === layout.id }"
@@ -98,6 +117,9 @@ function saveAndSwitch() {
           <span v-for="tag in layout.metadata.tags" :key="tag" class="tag">{{ tag }}</span>
         </div>
       </button>
+      <div v-if="filteredLayouts.length === 0" class="no-results">
+        No keyboards matching "{{ searchQuery }}"
+      </div>
     </div>
   </BaseModal>
 
@@ -121,6 +143,39 @@ function saveAndSwitch() {
 </template>
 
 <style scoped>
+.layout-search {
+  margin-bottom: 12px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 2px solid var(--border, #e5e7eb);
+  border-radius: 6px;
+  font-size: 14px;
+  background: var(--surface, #fff);
+  color: var(--text-primary, #1f2937);
+  outline: none;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+}
+
+.search-input:focus {
+  border-color: var(--primary, #3b82f6);
+}
+
+.search-input::placeholder {
+  color: var(--text-secondary, #6b7280);
+}
+
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+  color: var(--text-secondary, #6b7280);
+}
+
 .layout-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
