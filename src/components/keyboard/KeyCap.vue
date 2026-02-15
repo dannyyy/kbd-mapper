@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import type { KeyPosition } from '../../types/layout'
 import type { Layer, KeyBinding } from '../../types/keymap'
 import type { Theme, KeyStyle } from '../../types/theme'
-import { keyToPixel, keyTransform, getSplitOffset } from '../../utils/coordinates'
+import { keyToPixel, keyTransform } from '../../utils/coordinates'
 import { computeLegendPlacements } from '../../composables/useKeyRenderer'
 
 const props = defineProps<{

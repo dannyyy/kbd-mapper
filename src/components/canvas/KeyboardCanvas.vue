@@ -8,7 +8,6 @@ import CanvasControls from './CanvasControls.vue'
 const editorStore = useEditorStore()
 const themeStore = useThemeStore()
 
-const canvasRef = ref<HTMLElement>()
 const isPanning = ref(false)
 const panStart = ref({ x: 0, y: 0 })
 
@@ -54,7 +53,6 @@ function handleMouseUp() {
 
 <template>
   <div
-    ref="canvasRef"
     class="keyboard-canvas"
     :style="{ backgroundColor: background }"
     @wheel="handleWheel"

@@ -12,7 +12,7 @@ const renderMode = computed(() => projectStore.project.settings.renderMode)
 function cycleRenderMode() {
   const modes: Array<'auto' | 'compact' | 'expanded'> = ['auto', 'compact', 'expanded']
   const current = modes.indexOf(renderMode.value)
-  const next = modes[(current + 1) % modes.length]
+  const next = modes[(current + 1) % modes.length]!
   projectStore.setRenderMode(next)
 }
 </script>

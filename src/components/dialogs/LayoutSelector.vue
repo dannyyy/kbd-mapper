@@ -46,8 +46,8 @@ function buildSpatialMapping(oldKeys: KeyPosition[], newKeys: KeyPosition[]): nu
   const pairs: { newIdx: number; oldIdx: number; dist: number }[] = []
   for (let ni = 0; ni < newNorm.length; ni++) {
     for (let oi = 0; oi < oldNorm.length; oi++) {
-      const dx = newNorm[ni][0] - oldNorm[oi][0]
-      const dy = newNorm[ni][1] - oldNorm[oi][1]
+      const dx = newNorm[ni]![0] - oldNorm[oi]![0]
+      const dy = newNorm[ni]![1] - oldNorm[oi]![1]
       pairs.push({ newIdx: ni, oldIdx: oi, dist: dx * dx + dy * dy })
     }
   }
@@ -83,7 +83,7 @@ function selectLayout(layoutId: string) {
   }
 
   for (let li = 0; li < projectStore.layers.length; li++) {
-    const oldBindings = [...projectStore.layers[li].bindings]
+    const oldBindings = [...projectStore.layers[li]!.bindings]
     const isBase = li === 0
     const emptyBinding: KeyBinding = isBase
       ? { label: '', type: 'normal' }
@@ -91,12 +91,12 @@ function selectLayout(layoutId: string) {
 
     const newBindings: KeyBinding[] = new Array(newLayout.keys.length)
     for (let ki = 0; ki < newLayout.keys.length; ki++) {
-      const oldIdx = mapping[ki]
+      const oldIdx = mapping[ki]!
       newBindings[ki] = oldIdx >= 0 && oldIdx < oldBindings.length
-        ? { ...oldBindings[oldIdx] }
+        ? { ...oldBindings[oldIdx]! }
         : { ...emptyBinding }
     }
-    projectStore.layers[li].bindings = newBindings
+    projectStore.layers[li]!.bindings = newBindings
   }
 
   editorStore.clearSelection()
