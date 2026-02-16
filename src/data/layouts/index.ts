@@ -7,9 +7,7 @@ import { planck } from "./planck";
 import { ansi60 } from "./ansi-60";
 import { ansiTkl } from "./ansi-tkl";
 import { kyria } from "./kyria";
-import { irisSe } from "./iris-se";
-import { irisCe } from "./iris-ce";
-import { irisLm } from "./iris-lm";
+import { iris } from "./iris-se";
 
 export const builtinLayouts: PhysicalLayout[] = [
   corne3x6,
@@ -20,9 +18,7 @@ export const builtinLayouts: PhysicalLayout[] = [
   ansi60,
   ansiTkl,
   kyria,
-  irisSe,
-  irisCe,
-  irisLm,
+  iris,
 ];
 
 export const layoutMap = new Map<string, PhysicalLayout>(
@@ -38,7 +34,5 @@ export {
   ansi60,
   ansiTkl,
   kyria,
-  irisSe,
-  irisCe,
-  irisLm,
+  iris,
 };

@@ -125,25 +125,7 @@ const registry: Record<string, DefaultKeymapData> = {
       { name: "Fn", bindings: ansiTklFn },
     ],
   },
-  "iris-se": {
-    layers: [
-      { name: "Base", bindings: irisBase },
-      { name: "Shift", bindings: irisShift },
-      { name: "Lower", bindings: irisLower },
-      { name: "Raise", bindings: irisRaise },
-      { name: "Nav", bindings: irisNav },
-    ],
-  },
-  "iris-ce": {
-    layers: [
-      { name: "Base", bindings: irisBase },
-      { name: "Shift", bindings: irisShift },
-      { name: "Lower", bindings: irisLower },
-      { name: "Raise", bindings: irisRaise },
-      { name: "Nav", bindings: irisNav },
-    ],
-  },
-  "iris-lm": {
+  iris: {
     layers: [
       { name: "Base", bindings: irisBase },
       { name: "Shift", bindings: irisShift },

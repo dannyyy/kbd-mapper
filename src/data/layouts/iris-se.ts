@@ -1,6 +1,7 @@
 import type { PhysicalLayout } from "../../types/layout";
 
-// Iris SE: 56 keys, split ergonomic 4x6+4 per side (MX switches, tray-mount case)
+// Iris SE / CE / LM: 56 keys, split ergonomic 4x6+4 per side
+// All three Iris variants share the same physical key layout.
 // Columnar stagger matching Ergodox-style offsets from QMK
 const LEFT_STAGGER = [0, 0, -0.25, -0.375, -0.25, -0.125];
 const RIGHT_STAGGER = [-0.125, -0.25, -0.375, -0.25, 0, 0];
@@ -48,9 +49,9 @@ function rightKeys() {
   return keys;
 }
 
-export const irisSe: PhysicalLayout = {
-  id: "iris-se",
-  name: "Iris SE",
+export const iris: PhysicalLayout = {
+  id: "iris",
+  name: "Iris SE / CE / LM",
   keys: [...leftKeys(), ...rightKeys()],
   splits: [28],
   metadata: {
