@@ -39,10 +39,7 @@ function handleMouseDown(e: MouseEvent) {
 
 function handleMouseMove(e: MouseEvent) {
   if (isPanning.value) {
-    editorStore.setPan(
-      e.clientX - panStart.value.x,
-      e.clientY - panStart.value.y,
-    )
+    editorStore.setPan(e.clientX - panStart.value.x, e.clientY - panStart.value.y)
   }
 }
 

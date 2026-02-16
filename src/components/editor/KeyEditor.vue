@@ -16,9 +16,7 @@ const displayedLayers = computed(() => {
   return projectStore.visibleLayers
 })
 
-const hasHiddenLayers = computed(() =>
-  projectStore.layers.some(l => !l.visible)
-)
+const hasHiddenLayers = computed(() => projectStore.layers.some((l) => !l.visible))
 </script>
 
 <template>
@@ -26,16 +24,14 @@ const hasHiddenLayers = computed(() =>
     <template v-if="keyIndex !== null">
       <div class="panel-header">
         <h3 class="panel-title">Key #{{ keyIndex }}</h3>
-        <button class="close-btn" @click="editorStore.clearSelection" title="Deselect">&times;</button>
+        <button class="close-btn" @click="editorStore.clearSelection" title="Deselect">
+          &times;
+        </button>
       </div>
 
       <div v-if="hasHiddenLayers" class="show-all-toggle">
         <label class="toggle-label">
-          <input
-            type="checkbox"
-            v-model="showAllLayers"
-            class="toggle-checkbox"
-          />
+          <input type="checkbox" v-model="showAllLayers" class="toggle-checkbox" />
           Show hidden layers
         </label>
       </div>

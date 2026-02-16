@@ -1,39 +1,34 @@
-import { defineStore } from "pinia";
-import { ref, computed } from "vue";
-import type { Theme } from "../types/theme";
-import { builtinThemes, themeMap } from "../data/themes";
+import { defineStore } from 'pinia'
+import { ref, computed } from 'vue'
+import type { Theme } from '../types/theme'
+import { builtinThemes, themeMap } from '../data/themes'
 
 export const useThemeStore = defineStore(
-  "theme",
+  'theme',
   () => {
-    const currentThemeId = ref("clean-light");
-    const userThemes = ref<Theme[]>([]);
+    const currentThemeId = ref('clean-light')
+    const userThemes = ref<Theme[]>([])
 
-    const allThemes = computed<Theme[]>(() => [
-      ...builtinThemes,
-      ...userThemes.value,
-    ]);
+    const allThemes = computed<Theme[]>(() => [...builtinThemes, ...userThemes.value])
 
     const currentTheme = computed<Theme>(() => {
-      const fromUser = userThemes.value.find(
-        (t) => t.id === currentThemeId.value,
-      );
-      if (fromUser) return fromUser;
-      return themeMap.get(currentThemeId.value) ?? builtinThemes[0]!;
-    });
+      const fromUser = userThemes.value.find((t) => t.id === currentThemeId.value)
+      if (fromUser) return fromUser
+      return themeMap.get(currentThemeId.value) ?? builtinThemes[0]!
+    })
 
     function setTheme(id: string) {
-      currentThemeId.value = id;
+      currentThemeId.value = id
     }
 
     function addUserTheme(theme: Theme) {
-      userThemes.value.push({ ...theme, source: "user" });
+      userThemes.value.push({ ...theme, source: 'user' })
     }
 
     function removeUserTheme(id: string) {
-      userThemes.value = userThemes.value.filter((t) => t.id !== id);
+      userThemes.value = userThemes.value.filter((t) => t.id !== id)
       if (currentThemeId.value === id) {
-        currentThemeId.value = "clean-light";
+        currentThemeId.value = 'clean-light'
       }
     }
 
@@ -45,12 +40,12 @@ export const useThemeStore = defineStore(
       setTheme,
       addUserTheme,
       removeUserTheme,
-    };
+    }
   },
   {
     persist: {
-      key: "keyboard-show-off-theme",
-      pick: ["currentThemeId", "userThemes"],
+      key: 'keyboard-show-off-theme',
+      pick: ['currentThemeId', 'userThemes'],
     },
   },
-);
+)

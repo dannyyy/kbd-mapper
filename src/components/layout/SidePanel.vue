@@ -13,12 +13,16 @@ const editorStore = useEditorStore()
         class="tab"
         :class="{ active: editorStore.sidebarTab === 'layers' }"
         @click="editorStore.sidebarTab = 'layers'"
-      >Layers</button>
+      >
+        Layers
+      </button>
       <button
         class="tab"
         :class="{ active: editorStore.sidebarTab === 'key' }"
         @click="editorStore.sidebarTab = 'key'"
-      >Key</button>
+      >
+        Key
+      </button>
     </div>
 
     <div class="tab-content">
@@ -56,7 +60,9 @@ const editorStore = useEditorStore()
   text-transform: uppercase;
   letter-spacing: 0.5px;
   color: var(--text-secondary, #9ca3af);
-  transition: color 0.15s, background 0.15s;
+  transition:
+    color 0.15s,
+    background 0.15s;
 }
 
 .tab:hover {

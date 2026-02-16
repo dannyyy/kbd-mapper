@@ -73,7 +73,16 @@ export const darkMechanical: Theme = {
         strokeWidth: 1.5,
       },
     },
-    layerLabelColors: ['#818cf8', '#fbbf24', '#34d399', '#f87171', '#a78bfa', '#22d3ee', '#fb923c', '#f472b6'],
+    layerLabelColors: [
+      '#818cf8',
+      '#fbbf24',
+      '#34d399',
+      '#f87171',
+      '#a78bfa',
+      '#22d3ee',
+      '#fb923c',
+      '#f472b6',
+    ],
     legendColors: {
       primary: '#e5e7eb',
       secondary: '#9ca3af',
