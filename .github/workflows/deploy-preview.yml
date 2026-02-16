@@ -1,0 +1,84 @@
+name: Deploy Preview
+
+on:
+  push:
+    branches-ignore: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deploy-preview-${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  deploy-preview:
+    name: Build and Deploy Preview
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Sanitize branch name
+        id: branch
+        run: |
+          BRANCH_NAME="${{ github.ref_name }}"
+          SANITIZED=$(echo "$BRANCH_NAME" | sed 's/[^a-zA-Z0-9-]/-/g' | tr '[:upper:]' '[:lower:]' | sed 's/--*/-/g' | sed 's/^-//;s/-$//')
+          echo "sanitized=$SANITIZED" >> "$GITHUB_OUTPUT"
+          echo "Preview will be deployed to: /kbd-mapper/preview/$SANITIZED/"
+
+      - name: Build
+        run: pnpm build
+        env:
+          VITE_BASE_PATH: /kbd-mapper/preview/${{ steps.branch.outputs.sanitized }}/
+
+      - name: Deploy to gh-pages
+        run: |
+          PREVIEW_DIR="preview/${{ steps.branch.outputs.sanitized }}"
+
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Clone only the gh-pages branch (shallow)
+          git clone --depth 1 --branch gh-pages "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" gh-pages-repo || {
+            # If gh-pages doesn't exist yet, create it
+            mkdir gh-pages-repo
+            cd gh-pages-repo
+            git init
+            git checkout -b gh-pages
+            git remote add origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git"
+            cd ..
+          }
+
+          # Remove old preview for this branch, add new one
+          cd gh-pages-repo
+          rm -rf "$PREVIEW_DIR"
+          mkdir -p "$PREVIEW_DIR"
+          cp -r ../dist/* "$PREVIEW_DIR/"
+
+          # Commit and push
+          git add -A
+          git diff --staged --quiet && echo "No changes to deploy" && exit 0
+          git commit -m "Deploy preview: ${{ steps.branch.outputs.sanitized }}"
+          git push origin gh-pages
+
+      - name: Post preview URL
+        run: |
+          OWNER="${{ github.repository_owner }}"
+          SANITIZED="${{ steps.branch.outputs.sanitized }}"
+          echo "::notice::Preview deployed to https://${OWNER}.github.io/kbd-mapper/preview/${SANITIZED}/"
