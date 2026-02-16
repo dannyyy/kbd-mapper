@@ -1,0 +1,101 @@
+name: Deploy Production
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    name: Validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Format check
+        run: pnpm format:check
+
+      - name: Type check
+        run: pnpm typecheck
+
+  deploy:
+    name: Build and Deploy Production
+    needs: validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+        env:
+          VITE_BASE_PATH: /kbd-mapper/
+
+      - name: Deploy to gh-pages
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Clone only the gh-pages branch (shallow)
+          git clone --depth 1 --branch gh-pages "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" gh-pages-repo || {
+            mkdir gh-pages-repo
+            cd gh-pages-repo
+            git init
+            git checkout -b gh-pages
+            git remote add origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git"
+            cd ..
+          }
+
+          cd gh-pages-repo
+
+          # Remove everything EXCEPT the preview/ directory and .git
+          find . -maxdepth 1 ! -name '.' ! -name '.git' ! -name 'preview' -exec rm -rf {} +
+
+          # Copy new production build to root
+          cp -r ../dist/* .
+
+          # Commit and push
+          git add -A
+          git diff --staged --quiet && echo "No changes to deploy" && exit 0
+          git commit -m "Deploy production: ${{ github.sha }}"
+          git push origin gh-pages

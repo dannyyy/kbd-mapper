@@ -1,0 +1,50 @@
+name: Cleanup Preview
+
+on:
+  delete:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cleanup-preview
+  cancel-in-progress: false
+
+jobs:
+  cleanup:
+    name: Remove Preview Deployment
+    runs-on: ubuntu-latest
+    if: github.event.ref_type == 'branch'
+
+    steps:
+      - name: Sanitize branch name
+        id: branch
+        run: |
+          BRANCH_NAME="${{ github.event.ref }}"
+          SANITIZED=$(echo "$BRANCH_NAME" | sed 's/[^a-zA-Z0-9-]/-/g' | tr '[:upper:]' '[:lower:]' | sed 's/--*/-/g' | sed 's/^-//;s/-$//')
+          echo "sanitized=$SANITIZED" >> "$GITHUB_OUTPUT"
+
+      - name: Remove preview from gh-pages
+        run: |
+          PREVIEW_DIR="preview/${{ steps.branch.outputs.sanitized }}"
+
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          git clone --depth 1 --branch gh-pages "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" gh-pages-repo || {
+            echo "gh-pages branch does not exist, nothing to clean up"
+            exit 0
+          }
+
+          cd gh-pages-repo
+
+          if [ -d "$PREVIEW_DIR" ]; then
+            rm -rf "$PREVIEW_DIR"
+            git add -A
+            git diff --staged --quiet && echo "Preview directory already clean" && exit 0
+            git commit -m "Cleanup preview: ${{ steps.branch.outputs.sanitized }}"
+            git push origin gh-pages
+            echo "Removed preview at $PREVIEW_DIR"
+          else
+            echo "No preview found at $PREVIEW_DIR, nothing to clean up"
+          fi
