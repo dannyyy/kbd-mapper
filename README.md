@@ -1,4 +1,4 @@
-# Keyboard Show Off
+# Kbd Mapper
 
 A browser-based visual editor for custom keyboard layouts. Create beautiful multi-layer keymap visualizations and export them as SVG, PNG, or vector PDF.
 

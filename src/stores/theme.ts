@@ -44,7 +44,7 @@ export const useThemeStore = defineStore(
   },
   {
     persist: {
-      key: 'keyboard-show-off-theme',
+      key: 'kbd-mapper-theme',
       pick: ['currentThemeId', 'userThemes'],
     },
   },
