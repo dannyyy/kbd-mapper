@@ -13,8 +13,6 @@ export const builtinThemes: Theme[] = [
   highContrast,
 ]
 
-export const themeMap = new Map<string, Theme>(
-  builtinThemes.map(t => [t.id, t])
-)
+export const themeMap = new Map<string, Theme>(builtinThemes.map((t) => [t.id, t]))
 
 export { cleanLight, darkMechanical, warmPaper, colorful, highContrast }

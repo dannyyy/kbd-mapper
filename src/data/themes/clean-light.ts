@@ -73,7 +73,16 @@ export const cleanLight: Theme = {
         strokeWidth: 1.5,
       },
     },
-    layerLabelColors: ['#6366f1', '#f59e0b', '#10b981', '#ef4444', '#8b5cf6', '#06b6d4', '#f97316', '#ec4899'],
+    layerLabelColors: [
+      '#6366f1',
+      '#f59e0b',
+      '#10b981',
+      '#ef4444',
+      '#8b5cf6',
+      '#06b6d4',
+      '#f97316',
+      '#ec4899',
+    ],
     legendColors: {
       primary: '#1f2937',
       secondary: '#6b7280',

@@ -21,11 +21,9 @@ const emit = defineEmits<{
 
 const padding = 20
 
-const bounds = computed(() => computeLayoutBounds(
-  props.layout.keys,
-  props.theme,
-  props.layout.splits,
-))
+const bounds = computed(() =>
+  computeLayoutBounds(props.layout.keys, props.theme, props.layout.splits),
+)
 
 const viewBox = computed(() => {
   const b = bounds.value

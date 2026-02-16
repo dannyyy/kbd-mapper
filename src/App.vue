@@ -18,10 +18,22 @@ function handleKeydown(e: KeyboardEvent) {
 
   // Escape: close dialogs or deselect
   if (e.key === 'Escape') {
-    if (editorStore.showExportDialog) { editorStore.showExportDialog = false; return }
-    if (editorStore.showThemeSelector) { editorStore.showThemeSelector = false; return }
-    if (editorStore.showLayoutSelector) { editorStore.showLayoutSelector = false; return }
-    if (editorStore.selectedKeyIndex !== null) { editorStore.clearSelection(); return }
+    if (editorStore.showExportDialog) {
+      editorStore.showExportDialog = false
+      return
+    }
+    if (editorStore.showThemeSelector) {
+      editorStore.showThemeSelector = false
+      return
+    }
+    if (editorStore.showLayoutSelector) {
+      editorStore.showLayoutSelector = false
+      return
+    }
+    if (editorStore.selectedKeyIndex !== null) {
+      editorStore.clearSelection()
+      return
+    }
   }
 
   // Cmd+S: save project

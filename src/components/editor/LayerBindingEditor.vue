@@ -26,8 +26,8 @@ const keyTypes: { value: KeyType; label: string }[] = [
   { value: 'custom', label: 'Custom' },
 ]
 
-const hasHold = computed(() =>
-  binding.value?.type === 'mod-tap' || binding.value?.type === 'layer-tap'
+const hasHold = computed(
+  () => binding.value?.type === 'mod-tap' || binding.value?.type === 'layer-tap',
 )
 
 function updateLabel(value: string) {

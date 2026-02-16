@@ -18,10 +18,11 @@ const searchQuery = ref('')
 const filteredLayouts = computed(() => {
   const q = searchQuery.value.trim().toLowerCase()
   if (!q) return builtinLayouts
-  return builtinLayouts.filter(layout =>
-    layout.name.toLowerCase().includes(q)
-    || layout.metadata.tags?.some(tag => tag.toLowerCase().includes(q))
-    || `${layout.keys.length}`.includes(q)
+  return builtinLayouts.filter(
+    (layout) =>
+      layout.name.toLowerCase().includes(q) ||
+      layout.metadata.tags?.some((tag) => tag.toLowerCase().includes(q)) ||
+      `${layout.keys.length}`.includes(q),
   )
 })
 
@@ -36,14 +37,17 @@ function selectLayout(layoutId: string) {
 }
 
 function applyLayout(layoutId: string) {
-  const newLayout = builtinLayouts.find(l => l.id === layoutId)
+  const newLayout = builtinLayouts.find((l) => l.id === layoutId)
   if (!newLayout) return
 
   projectStore.project.layout = {
     ...newLayout,
-    keys: newLayout.keys.map(k => ({ ...k })),
+    keys: newLayout.keys.map((k) => ({ ...k })),
     splits: newLayout.splits ? [...newLayout.splits] : undefined,
-    metadata: { ...newLayout.metadata, tags: newLayout.metadata.tags ? [...newLayout.metadata.tags] : undefined },
+    metadata: {
+      ...newLayout.metadata,
+      tags: newLayout.metadata.tags ? [...newLayout.metadata.tags] : undefined,
+    },
   }
 
   const defaultKeymap = getDefaultKeymapData(layoutId)
@@ -52,17 +56,19 @@ function applyLayout(layoutId: string) {
       id: generateId('layer'),
       name: layer.name,
       color: getLayerColor(i),
-      bindings: layer.bindings.map(b => ({ ...b })),
+      bindings: layer.bindings.map((b) => ({ ...b })),
       visible: true,
     }))
   } else {
-    projectStore.project.keymap.layers = [{
-      id: generateId('layer'),
-      name: 'Base',
-      color: getLayerColor(0),
-      bindings: Array.from({ length: newLayout.keys.length }, () => createEmptyBinding()),
-      visible: true,
-    }]
+    projectStore.project.keymap.layers = [
+      {
+        id: generateId('layer'),
+        name: 'Base',
+        color: getLayerColor(0),
+        bindings: Array.from({ length: newLayout.keys.length }, () => createEmptyBinding()),
+        visible: true,
+      },
+    ]
   }
 
   projectStore.markKeymapSaved()
@@ -124,11 +130,7 @@ function saveAndSwitch() {
   </BaseModal>
 
   <!-- Confirmation dialog -->
-  <BaseModal
-    title="Unsaved Changes"
-    :show="pendingLayoutId !== null"
-    @close="cancelSwitch"
-  >
+  <BaseModal title="Unsaved Changes" :show="pendingLayoutId !== null" @close="cancelSwitch">
     <div class="confirm-content">
       <p class="confirm-message">
         You have unsaved changes to your key mappings. Do you want to save before switching layouts?
@@ -192,7 +194,9 @@ function saveAndSwitch() {
   border-radius: 8px;
   cursor: pointer;
   text-align: left;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
 }
 
 .layout-card:hover {
@@ -256,7 +260,9 @@ function saveAndSwitch() {
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
 }
 
 .btn-secondary {

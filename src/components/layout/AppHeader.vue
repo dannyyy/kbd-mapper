@@ -19,7 +19,13 @@ const editorStore = useEditorStore()
         @click="editorStore.showThemeSelector = true"
         :title="`Theme: ${themeStore.currentTheme.name}`"
       >
-        <span class="theme-preview" :style="{ backgroundColor: themeStore.currentTheme.colors.background, borderColor: themeStore.currentTheme.colors.keyDefault.stroke }" />
+        <span
+          class="theme-preview"
+          :style="{
+            backgroundColor: themeStore.currentTheme.colors.background,
+            borderColor: themeStore.currentTheme.colors.keyDefault.stroke,
+          }"
+        />
         {{ themeStore.currentTheme.name }}
       </button>
     </div>

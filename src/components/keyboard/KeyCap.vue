@@ -23,7 +23,9 @@ const emit = defineEmits<{
 
 const pixel = computed(() => keyToPixel(props.keyPosition, props.theme))
 const transform = computed(() => keyTransform(props.keyPosition, props.theme))
-const radius = computed(() => props.theme.colors.keyDefault.borderRadius ?? props.theme.layout.borderRadius)
+const radius = computed(
+  () => props.theme.colors.keyDefault.borderRadius ?? props.theme.layout.borderRadius,
+)
 
 // Determine key style based on binding type
 const keyStyle = computed<KeyStyle>(() => {
@@ -35,7 +37,7 @@ const keyStyle = computed<KeyStyle>(() => {
     binding = layer?.bindings[props.keyIndex]
   } else if (props.layers.length > 0) {
     // In compact mode, use base layer binding for key style
-    const visibleLayers = props.layers.filter(l => l.visible)
+    const visibleLayers = props.layers.filter((l) => l.visible)
     binding = visibleLayers[0]?.bindings[props.keyIndex]
   }
 
@@ -140,7 +142,12 @@ const groupTransform = computed(() => {
       :stroke-width="isSelected ? 2.5 : (keyStyle.strokeWidth ?? 1)"
       :stroke-dasharray="keyStyle.strokeDasharray ?? 'none'"
       :opacity="keyStyle.opacity ?? 1"
-      style="cursor: pointer; transition: stroke 0.15s, stroke-width 0.15s;"
+      style="
+        cursor: pointer;
+        transition:
+          stroke 0.15s,
+          stroke-width 0.15s;
+      "
     />
 
     <!-- Selection highlight -->
@@ -171,7 +178,8 @@ const groupTransform = computed(() => {
       :font-weight="legend.isHold ? 400 : 500"
       :font-style="legend.isHold ? 'italic' : 'normal'"
       dominant-baseline="auto"
-      style="pointer-events: none; user-select: none;"
-    >{{ legend.text }}</text>
+      style="pointer-events: none; user-select: none"
+      >{{ legend.text }}</text
+    >
   </g>
 </template>
