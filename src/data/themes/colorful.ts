@@ -73,7 +73,16 @@ export const colorful: Theme = {
         strokeWidth: 1.5,
       },
     },
-    layerLabelColors: ['#4f46e5', '#eab308', '#059669', '#dc2626', '#7c3aed', '#0891b2', '#ea580c', '#db2777'],
+    layerLabelColors: [
+      '#4f46e5',
+      '#eab308',
+      '#059669',
+      '#dc2626',
+      '#7c3aed',
+      '#0891b2',
+      '#ea580c',
+      '#db2777',
+    ],
     legendColors: {
       primary: '#334155',
       secondary: '#64748b',

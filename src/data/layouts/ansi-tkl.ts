@@ -58,13 +58,13 @@ function ansiTklKeys() {
 
   // Row 5: Bottom
   const r5y = 5.5
-  keys.push({ x: 0, y: r5y, w: 1.25 })    // LCtrl
-  keys.push({ x: 1.25, y: r5y, w: 1.25 })  // LGUI
-  keys.push({ x: 2.5, y: r5y, w: 1.25 })   // LAlt
-  keys.push({ x: 3.75, y: r5y, w: 6.25 })  // Space
-  keys.push({ x: 10, y: r5y, w: 1.25 })    // RAlt
+  keys.push({ x: 0, y: r5y, w: 1.25 }) // LCtrl
+  keys.push({ x: 1.25, y: r5y, w: 1.25 }) // LGUI
+  keys.push({ x: 2.5, y: r5y, w: 1.25 }) // LAlt
+  keys.push({ x: 3.75, y: r5y, w: 6.25 }) // Space
+  keys.push({ x: 10, y: r5y, w: 1.25 }) // RAlt
   keys.push({ x: 11.25, y: r5y, w: 1.25 }) // RGUI
-  keys.push({ x: 12.5, y: r5y, w: 1.25 })  // Menu
+  keys.push({ x: 12.5, y: r5y, w: 1.25 }) // Menu
   keys.push({ x: 13.75, y: r5y, w: 1.25 }) // RCtrl
   keys.push({ x: 15.5, y: r5y }) // Left
   keys.push({ x: 16.5, y: r5y }) // Down

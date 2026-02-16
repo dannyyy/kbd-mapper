@@ -73,7 +73,16 @@ export const warmPaper: Theme = {
         strokeWidth: 1.5,
       },
     },
-    layerLabelColors: ['#7c6f9e', '#c49858', '#6e9e7c', '#c45858', '#9e6fb8', '#58a4c4', '#c47858', '#c458a4'],
+    layerLabelColors: [
+      '#7c6f9e',
+      '#c49858',
+      '#6e9e7c',
+      '#c45858',
+      '#9e6fb8',
+      '#58a4c4',
+      '#c47858',
+      '#c458a4',
+    ],
     legendColors: {
       primary: '#44403c',
       secondary: '#78716c',

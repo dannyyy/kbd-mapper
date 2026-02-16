@@ -19,7 +19,12 @@ const editorStore = useEditorStore()
         :key="theme.id"
         class="theme-card"
         :class="{ active: themeStore.currentThemeId === theme.id }"
-        @click="themeStore.setTheme(theme.id); editorStore.showThemeSelector = false"
+        @click="
+          () => {
+            themeStore.setTheme(theme.id)
+            editorStore.showThemeSelector = false
+          }
+        "
       >
         <div class="theme-preview" :style="{ backgroundColor: theme.colors.background }">
           <div class="preview-keys">
@@ -31,16 +36,23 @@ const editorStore = useEditorStore()
                 borderRadius: (theme.colors.keyDefault.borderRadius ?? 4) + 'px',
                 color: theme.colors.keyDefault.textColor,
               }"
-            >A</div>
+            >
+              A
+            </div>
             <div
               class="preview-key mod"
               :style="{
-                backgroundColor: theme.colors.keyStyles.modifier?.fill ?? theme.colors.keyDefault.fill,
-                borderColor: theme.colors.keyStyles.modifier?.stroke ?? theme.colors.keyDefault.stroke,
+                backgroundColor:
+                  theme.colors.keyStyles.modifier?.fill ?? theme.colors.keyDefault.fill,
+                borderColor:
+                  theme.colors.keyStyles.modifier?.stroke ?? theme.colors.keyDefault.stroke,
                 borderRadius: (theme.colors.keyDefault.borderRadius ?? 4) + 'px',
-                color: theme.colors.keyStyles.modifier?.textColor ?? theme.colors.keyDefault.textColor,
+                color:
+                  theme.colors.keyStyles.modifier?.textColor ?? theme.colors.keyDefault.textColor,
               }"
-            >Ctrl</div>
+            >
+              Ctrl
+            </div>
           </div>
         </div>
         <span class="theme-name">{{ theme.name }}</span>
@@ -67,7 +79,9 @@ const editorStore = useEditorStore()
   border-radius: 8px;
   cursor: pointer;
   overflow: hidden;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
 }
 
 .theme-card:hover {

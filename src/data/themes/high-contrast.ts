@@ -73,7 +73,16 @@ export const highContrast: Theme = {
         strokeWidth: 2,
       },
     },
-    layerLabelColors: ['#000000', '#444444', '#666666', '#888888', '#333333', '#555555', '#777777', '#999999'],
+    layerLabelColors: [
+      '#000000',
+      '#444444',
+      '#666666',
+      '#888888',
+      '#333333',
+      '#555555',
+      '#777777',
+      '#999999',
+    ],
     legendColors: {
       primary: '#000000',
       secondary: '#444444',

@@ -25,7 +25,7 @@ function handleLoad() {
       projectStore.loadProject(data)
     } catch (err) {
       console.error('Failed to load project:', err)
-      alert('Failed to load project file. Make sure it\'s a valid JSON file.')
+      alert("Failed to load project file. Make sure it's a valid JSON file.")
     }
   }
   input.click()
@@ -38,11 +38,19 @@ function handleLoad() {
     <button class="toolbar-btn" @click="handleSave" title="Save project as JSON">Save</button>
     <button class="toolbar-btn" @click="handleLoad" title="Load project from JSON">Load</button>
     <div class="separator" />
-    <button class="toolbar-btn" @click="editorStore.showLayoutSelector = true" title="Change layout">
+    <button
+      class="toolbar-btn"
+      @click="editorStore.showLayoutSelector = true"
+      title="Change layout"
+    >
       {{ projectStore.layout.name }}
     </button>
     <div class="separator" />
-    <button class="toolbar-btn primary" @click="editorStore.showExportDialog = true" title="Export image">
+    <button
+      class="toolbar-btn primary"
+      @click="editorStore.showExportDialog = true"
+      title="Export image"
+    >
       Export
     </button>
   </div>
