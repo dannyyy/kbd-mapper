@@ -10,7 +10,7 @@ const editorStore = useEditorStore()
   <header class="app-header">
     <div class="header-left">
       <span class="logo">⌨</span>
-      <h1 class="app-title">Keyboard Show Off</h1>
+      <h1 class="app-title">Kbd Mapper</h1>
     </div>
 
     <div class="header-right">

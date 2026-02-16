@@ -227,7 +227,7 @@ export const useProjectStore = defineStore(
   },
   {
     persist: {
-      key: "keyboard-show-off-project",
+      key: "kbd-mapper-project",
       pick: ["project"],
       afterHydrate(ctx) {
         const store = ctx.store as ReturnType<typeof useProjectStore>;
