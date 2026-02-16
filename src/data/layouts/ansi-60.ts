@@ -24,13 +24,13 @@ function ansi60Keys() {
   keys.push({ x: 12.25, y: 3, w: 2.75 }) // Right Shift
 
   // Row 4: Space row
-  keys.push({ x: 0, y: 4, w: 1.25 })    // Left Ctrl
-  keys.push({ x: 1.25, y: 4, w: 1.25 })  // Left GUI
-  keys.push({ x: 2.5, y: 4, w: 1.25 })   // Left Alt
-  keys.push({ x: 3.75, y: 4, w: 6.25 })  // Space
-  keys.push({ x: 10, y: 4, w: 1.25 })    // Right Alt
+  keys.push({ x: 0, y: 4, w: 1.25 }) // Left Ctrl
+  keys.push({ x: 1.25, y: 4, w: 1.25 }) // Left GUI
+  keys.push({ x: 2.5, y: 4, w: 1.25 }) // Left Alt
+  keys.push({ x: 3.75, y: 4, w: 6.25 }) // Space
+  keys.push({ x: 10, y: 4, w: 1.25 }) // Right Alt
   keys.push({ x: 11.25, y: 4, w: 1.25 }) // Right GUI
-  keys.push({ x: 12.5, y: 4, w: 1.25 })  // Menu
+  keys.push({ x: 12.5, y: 4, w: 1.25 }) // Menu
   keys.push({ x: 13.75, y: 4, w: 1.25 }) // Right Ctrl
 
   return keys

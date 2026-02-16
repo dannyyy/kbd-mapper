@@ -37,12 +37,14 @@ async function handleExport() {
         <label class="field-label">Format</label>
         <div class="format-buttons">
           <button
-            v-for="fmt in (['svg', 'png', 'pdf'] as const)"
+            v-for="fmt in ['svg', 'png', 'pdf'] as const"
             :key="fmt"
             class="format-btn"
             :class="{ active: exportFormat === fmt }"
             @click="exportFormat = fmt"
-          >{{ fmt.toUpperCase() }}</button>
+          >
+            {{ fmt.toUpperCase() }}
+          </button>
         </div>
       </div>
 
@@ -55,15 +57,13 @@ async function handleExport() {
             class="scale-btn"
             :class="{ active: exportScale === s }"
             @click="exportScale = s"
-          >{{ s }}x</button>
+          >
+            {{ s }}x
+          </button>
         </div>
       </div>
 
-      <button
-        class="export-btn"
-        :disabled="isExporting"
-        @click="handleExport"
-      >
+      <button class="export-btn" :disabled="isExporting" @click="handleExport">
         {{ isExporting ? 'Exporting...' : `Export ${exportFormat.toUpperCase()}` }}
       </button>
     </div>

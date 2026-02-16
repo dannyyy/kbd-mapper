@@ -33,11 +33,7 @@ function finishEditing() {
 </script>
 
 <template>
-  <div
-    class="layer-item"
-    :class="{ active: isActive }"
-    @click="emit('activate')"
-  >
+  <div class="layer-item" :class="{ active: isActive }" @click="emit('activate')">
     <button
       class="visibility-btn"
       :class="{ hidden: !layer.visible }"
@@ -76,12 +72,9 @@ function finishEditing() {
       title="Layer color"
     />
 
-    <button
-      v-if="index > 0"
-      class="remove-btn"
-      @click.stop="emit('remove')"
-      title="Remove layer"
-    >×</button>
+    <button v-if="index > 0" class="remove-btn" @click.stop="emit('remove')" title="Remove layer">
+      ×
+    </button>
   </div>
 </template>
 

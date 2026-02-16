@@ -37,11 +37,7 @@ function handleSelectKey(index: number | null) {
 
     <!-- Expanded mode: one keyboard per visible layer -->
     <template v-else>
-      <div
-        v-for="layer in visibleLayers"
-        :key="layer.id"
-        class="expanded-layer"
-      >
+      <div v-for="layer in visibleLayers" :key="layer.id" class="expanded-layer">
         <LayerHeader
           :name="layer.name"
           :color="layer.color"
