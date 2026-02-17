@@ -6,6 +6,8 @@ const props = defineProps<{
   layer: Layer
   index: number
   isActive: boolean
+  isFirst: boolean
+  isLast: boolean
 }>()
 
 const emit = defineEmits<{
@@ -14,6 +16,8 @@ const emit = defineEmits<{
   rename: [name: string]
   setColor: [color: string]
   remove: []
+  moveUp: []
+  moveDown: []
 }>()
 
 const isEditing = ref(false)
@@ -71,6 +75,25 @@ function finishEditing() {
       @click.stop
       title="Layer color"
     />
+
+    <div v-if="index > 0" class="reorder-btns">
+      <button
+        v-if="!isFirst"
+        class="reorder-btn"
+        @click.stop="emit('moveUp')"
+        title="Move layer up"
+      >
+        ▲
+      </button>
+      <button
+        v-if="!isLast"
+        class="reorder-btn"
+        @click.stop="emit('moveDown')"
+        title="Move layer down"
+      >
+        ▼
+      </button>
+    </div>
 
     <button v-if="index > 0" class="remove-btn" @click.stop="emit('remove')" title="Remove layer">
       ×
@@ -148,6 +171,32 @@ function finishEditing() {
   cursor: pointer;
   background: none;
   border-radius: 4px;
+}
+
+.reorder-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.layer-item:hover .reorder-btns {
+  opacity: 1;
+}
+
+.reorder-btn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--text-secondary, #9ca3af);
+  font-size: 8px;
+  padding: 0 2px;
+  line-height: 1;
+}
+
+.reorder-btn:hover {
+  color: var(--text-primary, #1f2937);
 }
 
 .remove-btn {

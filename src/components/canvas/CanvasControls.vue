@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, inject } from 'vue'
 import { useEditorStore } from '../../stores/editor'
 import { useProjectStore } from '../../stores/project'
 
 const editorStore = useEditorStore()
 const projectStore = useProjectStore()
+const fitToView = inject<() => void>('fitToView', () => editorStore.resetView())
 
 const zoomPercent = computed(() => Math.round(editorStore.canvasZoom * 100))
 const renderMode = computed(() => projectStore.project.settings.renderMode)
@@ -22,7 +23,7 @@ function cycleRenderMode() {
     <button class="ctrl-btn" @click="editorStore.zoomOut" title="Zoom out">-</button>
     <span class="zoom-label">{{ zoomPercent }}%</span>
     <button class="ctrl-btn" @click="editorStore.zoomIn" title="Zoom in">+</button>
-    <button class="ctrl-btn" @click="editorStore.resetView" title="Reset view">Fit</button>
+    <button class="ctrl-btn" @click="fitToView" title="Fit to view">Fit</button>
     <div class="separator" />
     <button class="ctrl-btn mode-btn" @click="cycleRenderMode" :title="`Mode: ${renderMode}`">
       {{ renderMode === 'auto' ? 'Auto' : renderMode === 'compact' ? 'Compact' : 'Expanded' }}
