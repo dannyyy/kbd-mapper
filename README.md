@@ -2,7 +2,7 @@
 
 A browser-based visual editor for custom keyboard layouts. Create beautiful multi-layer keymap visualizations and export them as SVG, PNG, or vector PDF.
 
-Built for the custom keyboard community (Corne, Sweep, Lily58, Planck, etc.) who want to showcase their layouts with style.
+Built for the custom keyboard community (Corne, Sweep, Lily58, Iris SE/CE/LM, Planck, etc.) who want to showcase their layouts with style.
 
 ![Clean Light theme](docs/screenshot-clean-light.png)
 
@@ -11,8 +11,9 @@ Built for the custom keyboard community (Corne, Sweep, Lily58, Planck, etc.) who
 ## Features
 
 - **Multi-layer editing** — Define up to 8 visible layers with per-key bindings, hold behaviors (mod-tap, layer-tap), and colored layer indicators
-- **Compact & expanded views** — Compact mode shows all layers on a single keyboard; expanded mode renders one keyboard per layer
-- **8 built-in layouts** — Corne 3x6, Corne 3x5, Ferris Sweep, Lily58, Planck, ANSI 60%, ANSI TKL, Kyria
+- **Layer reordering** — Drag layers up/down to organize your keymap (base layer stays pinned)
+- **Compact & expanded views** — Compact mode shows all layers on a single keyboard; expanded mode renders one keyboard per layer; auto mode switches based on layer count
+- **9 built-in layouts** — Corne 3x6, Corne 3x5, Ferris Sweep, Lily58, Iris SE/CE/LM, Planck, ANSI 60%, ANSI TKL, Kyria
 - **5 built-in themes** — Clean Light, Dark Mechanical, Warm Paper, Colorful, High Contrast
 - **Export** — SVG, PNG (1x-4x scale), and vector PDF (selectable text, infinite zoom)
 - **Spatial key mapping** — Switch between layouts without losing your bindings
@@ -45,4 +46,4 @@ pnpm preview      # Preview the production build
 
 ## License
 
-MIT
+AGPL-3.0
