@@ -21,11 +21,15 @@ const editorStore = useEditorStore()
         :layer="layer"
         :index="index"
         :is-active="editorStore.activeLayerId === layer.id"
+        :is-first="index <= 1"
+        :is-last="index === projectStore.layers.length - 1"
         @activate="editorStore.setActiveLayer(layer.id)"
         @toggle-visibility="projectStore.toggleLayerVisibility(layer.id)"
         @rename="projectStore.renameLayer(layer.id, $event)"
         @set-color="projectStore.setLayerColor(layer.id, $event)"
         @remove="projectStore.removeLayer(layer.id)"
+        @move-up="projectStore.reorderLayer(index, index - 1)"
+        @move-down="projectStore.reorderLayer(index, index + 1)"
       />
     </div>
   </div>
