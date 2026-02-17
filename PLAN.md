@@ -11,6 +11,7 @@ Three related improvements to compact-mode keycap rendering and layer management
 **Problem:** In compact mode, the Shift layer shows labels like `Q` on keys where the base layer already shows `Q`. This is visual noise — only keys that differ when shifted (e.g., `'` → `"`, `,` → `<`) carry useful information.
 
 **Approach:**
+
 - In `computeLegendPlacements()` (`src/composables/useKeyRenderer.ts`), detect the Shift layer by name (`layer.name.toLowerCase() === 'shift'`).
 - When placing the Shift layer's legend, compare `shiftBinding.label.toLowerCase()` to `baseBinding.label.toLowerCase()`.
 - If they match (case-insensitive), skip the placement entirely — treat it as if the binding were transparent.
@@ -25,6 +26,7 @@ Three related improvements to compact-mode keycap rendering and layer management
 **Problem:** Current corner layout is L1=top-left, L2=bottom-left, L3=bottom-right, L4=top-right (not clockwise). The Shift layer occupies a corner position like any other layer.
 
 **New layout:**
+
 ```
 +-------------------------------+
 | [L1]      Shift-diff   [L2]  |  top-left / top-center / top-right
@@ -36,6 +38,7 @@ Three related improvements to compact-mode keycap rendering and layer management
 ```
 
 **Changes:**
+
 1. The Shift layer gets a dedicated **top-center** position (same area as hold labels), not a corner slot.
 2. Remaining non-shift layers fill corners **clockwise**: top-left → top-right → bottom-right → bottom-left.
 3. This means 4 corner slots remain for non-base/non-shift layers (same as before — shift just moved from a corner to top-center).
@@ -61,12 +64,14 @@ Add **▲ / ▼ arrow buttons** to each `LayerItem` in the sidebar layer list:
 - Reordering calls `projectStore.reorderLayer(fromIndex, toIndex)`, which splices the `layers` array. Since `computeLegendPlacements` reads layers in array order, the corner positions automatically reflect the new order.
 
 **Why buttons over drag-and-drop:**
+
 - No external library needed (the project has zero drag-drop dependencies).
 - Works well for the typical 4-6 layer count.
 - More accessible (keyboard-friendly).
 - Drag-and-drop could be added later as an enhancement if desired.
 
 **Files:**
+
 - `src/components/editor/LayerItem.vue` — add ▲/▼ buttons and emit `move-up`/`move-down` events
 - `src/components/editor/LayerPanel.vue` — wire up events to `projectStore.reorderLayer()`
 

@@ -82,13 +82,17 @@ function finishEditing() {
         class="reorder-btn"
         @click.stop="emit('moveUp')"
         title="Move layer up"
-      >▲</button>
+      >
+        ▲
+      </button>
       <button
         v-if="!isLast"
         class="reorder-btn"
         @click.stop="emit('moveDown')"
         title="Move layer down"
-      >▼</button>
+      >
+        ▼
+      </button>
     </div>
 
     <button v-if="index > 0" class="remove-btn" @click.stop="emit('remove')" title="Remove layer">

@@ -29,10 +29,7 @@ function handleWheel(e: WheelEvent) {
     const zoom = editorStore.canvasZoom
     const dx = e.shiftKey ? -e.deltaY / zoom : -e.deltaX / zoom
     const dy = e.shiftKey ? 0 : -e.deltaY / zoom
-    editorStore.setPan(
-      editorStore.canvasPan.x + dx,
-      editorStore.canvasPan.y + dy,
-    )
+    editorStore.setPan(editorStore.canvasPan.x + dx, editorStore.canvasPan.y + dy)
   }
 }
 

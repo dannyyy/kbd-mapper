@@ -81,9 +81,7 @@ export function computeLegendPlacements(
   const shiftLayerIndex = visibleLayers.findIndex(
     (l, i) => i > 0 && l.name.toLowerCase() === 'shift',
   )
-  const nonShiftLayers = visibleLayers.filter(
-    (_, i) => i > 0 && i !== shiftLayerIndex,
-  )
+  const nonShiftLayers = visibleLayers.filter((_, i) => i > 0 && i !== shiftLayerIndex)
 
   // Shift layer - top center (only when label differs from base)
   if (shiftLayerIndex > 0 && !hasHoldLabel) {
