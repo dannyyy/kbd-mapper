@@ -297,6 +297,20 @@ const QMK_KEYCODES: Record<string, KeycodeEntry> = {
   QK_REPEAT_KEY: { label: 'Repeat', type: 'custom' },
   QK_AREP: { label: 'AltRep', type: 'custom' },
   QK_ALT_REPEAT_KEY: { label: 'AltRep', type: 'custom' },
+  KC_GESC: { label: 'Esc/`', type: 'normal' },
+  QK_GESC: { label: 'Esc/`', type: 'normal' },
+
+  // Legacy QMK aliases used by VIAL
+  KC_BSPACE: { label: 'Bksp', type: 'normal' },
+  KC_SCOLON: { label: ';', type: 'normal' },
+  KC_BSLASH: { label: '\\', type: 'normal' },
+  KC_LBRACKET: { label: '[', type: 'normal' },
+  KC_RBRACKET: { label: ']', type: 'normal' },
+  KC_CAPSLOCK: { label: 'Caps', type: 'normal' },
+
+  // VIAL-specific keycodes
+  FN_MO13: { label: 'L1/L3', type: 'layer-toggle' },
+  FN_MO23: { label: 'L2/L3', type: 'layer-toggle' },
 
   // RGB / Backlight
   RGB_TOG: { label: 'RGB', type: 'custom' },

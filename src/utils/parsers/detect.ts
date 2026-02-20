@@ -83,10 +83,11 @@ export function detectFormat(content: string, filename: string): ImportFormat {
     }
   }
 
-  // VIAL saved layout: has "version", "uid", and "layout" as 3D array [layer][row][col]
-  if (isRecord(json) && 'uid' in json && 'version' in json && Array.isArray(json.layout)) {
+  // VIAL saved layout: has "layout" as 3D array [layer][row][col] plus VIAL signatures
+  if (isRecord(json) && Array.isArray(json.layout)) {
+    const hasVialSignature = 'uid' in json || 'vial_protocol' in json || 'via_protocol' in json
     const firstLayer = json.layout[0]
-    if (Array.isArray(firstLayer) && Array.isArray(firstLayer[0])) {
+    if (hasVialSignature && Array.isArray(firstLayer) && Array.isArray(firstLayer[0])) {
       return 'vial'
     }
   }

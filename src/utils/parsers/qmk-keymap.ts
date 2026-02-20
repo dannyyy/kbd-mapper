@@ -150,7 +150,7 @@ export function parseQmkKeycodeString(raw: string): { binding: KeyBinding; warni
 
   // Modified key: LCTL(KC_C), LSFT(KC_1), S(KC_A), etc.
   const modKeyMatch = trimmed.match(
-    /^(LCTL|LSFT|LALT|LGUI|RCTL|RSFT|RALT|RGUI|HYPR|MEH|LSG|LCA|LAG|LCAG|C|S|A|G)\(\s*(.+)\s*\)$/,
+    /^(LCTL|LSFT|LALT|LGUI|RCTL|RSFT|RALT|RGUI|HYPR|MEH|LSG|LCA|LAG|LCAG|LCG|LCS|LSA|RCS|SGUI|SCMD|SWIN|C_S|C|S|A|G)\(\s*(.+)\s*\)$/,
   )
   if (modKeyMatch) {
     const modName = modKeyMatch[1]!
@@ -173,9 +173,17 @@ export function parseQmkKeycodeString(raw: string): { binding: KeyBinding; warni
         HYPR: 'Hypr',
         MEH: 'Meh',
         LSG: 'S+G',
+        SGUI: 'S+G',
+        SCMD: 'S+G',
+        SWIN: 'S+G',
         LCA: 'C+A',
         LAG: 'A+G',
         LCAG: 'C+A+G',
+        LCG: 'C+G',
+        LCS: 'C+S',
+        C_S: 'C+S',
+        LSA: 'S+A',
+        RCS: 'RC+RS',
       }[modName] ?? modName
     return {
       binding: {

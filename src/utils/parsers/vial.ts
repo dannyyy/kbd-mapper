@@ -8,22 +8,10 @@ import { parseQmkKeycodeString } from './qmk-keymap'
 /**
  * Parse a VIAL saved layout (.vil) file.
  *
- * VIAL .vil files are JSON with keycodes stored as integers in a 3D array:
- * {
- *   "version": 1,
- *   "uid": ...,
- *   "layout": [           // layer[]
- *     [                    //   row[]
- *       [41, 30, 31, ...], //     keycodes (integers)
- *       [...]
- *     ],
- *     [...]
- *   ],
- *   "encoder_layout": [...],
- *   "tap_dance": [...],
- *   "combo": [...],
- *   ...
- * }
+ * VIAL .vil files are JSON with a 3D layout array [layer][row][col].
+ * Keycodes can be either QMK keycode strings ("KC_A", "LCTL_T(KC_A)")
+ * or 16-bit integers, depending on the VIAL version. Entries of -1 are
+ * matrix placeholders and are skipped.
  */
 export function parseVial(content: string): ImportResult {
   const data = JSON.parse(content)
@@ -33,9 +21,13 @@ export function parseVial(content: string): ImportResult {
     throw new Error('Invalid VIAL file: missing "layout" array')
   }
 
-  // VIAL layout is [layer][row][col] — flatten rows into a flat keycode array per layer
-  const layerArrays: number[][] = (data.layout as number[][][]).map((layer) =>
-    layer.flat().filter((v): v is number => typeof v === 'number' && v !== -1),
+  // Flatten [layer][row][col] → [layer][keys], skipping -1 placeholders
+  const layerArrays: (string | number)[][] = (data.layout as unknown[][][]).map((layer) =>
+    layer
+      .flat()
+      .filter(
+        (v): v is string | number => (typeof v === 'string' || typeof v === 'number') && v !== -1,
+      ),
   )
 
   if (layerArrays.length === 0) {
@@ -49,6 +41,48 @@ export function parseVial(content: string): ImportResult {
     const bindings: KeyBinding[] = keycodes.map((value, keyIndex) => {
       totalCount++
 
+      // String keycodes: parse directly as QMK keycode strings
+      if (typeof value === 'string') {
+        // Handle hex-string custom keycodes like "0x7e40"
+        if (value.startsWith('0x') || value.startsWith('0X')) {
+          const numValue = parseInt(value, 16)
+          if (!isNaN(numValue)) {
+            const decoded = decodeViaKeycode(numValue)
+            if (decoded) {
+              const { binding, warning } = parseQmkKeycodeString(decoded)
+              if (warning) {
+                unmappedCount++
+                warnings.push({
+                  type: 'unknown-keycode',
+                  message: warning,
+                  details: `Layer ${layerIndex}, key ${keyIndex}, decoded as ${decoded}`,
+                })
+              }
+              return binding
+            }
+          }
+          unmappedCount++
+          warnings.push({
+            type: 'unknown-keycode',
+            message: `Unknown VIAL keycode ${value}`,
+            details: `Layer ${layerIndex}, key ${keyIndex}`,
+          })
+          return { label: value.toUpperCase(), type: 'custom' as const }
+        }
+
+        const { binding, warning } = parseQmkKeycodeString(value)
+        if (warning) {
+          unmappedCount++
+          warnings.push({
+            type: 'unknown-keycode',
+            message: warning,
+            details: `Layer ${layerIndex}, key ${keyIndex}`,
+          })
+        }
+        return binding
+      }
+
+      // Integer keycodes: decode via VIA keycode table
       const keycodeStr = decodeViaKeycode(value)
 
       if (keycodeStr === null) {
@@ -82,25 +116,48 @@ export function parseVial(content: string): ImportResult {
     }
   })
 
-  // Warn about unsupported features
-  if (data.tap_dance && Array.isArray(data.tap_dance) && data.tap_dance.length > 0) {
+  // Count non-empty tap dance entries
+  const activeTapDances =
+    data.tap_dance && Array.isArray(data.tap_dance)
+      ? data.tap_dance.filter(
+          (td: unknown) =>
+            Array.isArray(td) && td.some((v: unknown) => typeof v === 'string' && v !== 'KC_NO'),
+        ).length
+      : 0
+
+  if (activeTapDances > 0) {
     warnings.push({
       type: 'dropped-tapdance',
-      message: `${data.tap_dance.length} tap dance entries were not imported`,
+      message: `${activeTapDances} tap dance entries were not imported`,
     })
   }
 
-  if (data.combo && Array.isArray(data.combo) && data.combo.length > 0) {
+  // Count non-empty combo entries
+  const activeCombos =
+    data.combo && Array.isArray(data.combo)
+      ? data.combo.filter(
+          (c: unknown) =>
+            Array.isArray(c) && c.some((v: unknown) => typeof v === 'string' && v !== 'KC_NO'),
+        ).length
+      : 0
+
+  if (activeCombos > 0) {
     warnings.push({
       type: 'dropped-combo',
-      message: `${data.combo.length} combo entries were not imported`,
+      message: `${activeCombos} combo entries were not imported`,
     })
   }
 
-  if (data.macro && Array.isArray(data.macro) && data.macro.length > 0) {
+  // Count non-empty macro entries
+  const activeMacros =
+    data.macro && Array.isArray(data.macro)
+      ? data.macro.filter((m: unknown) => Array.isArray(m) && m.length > 0).length
+      : 0
+
+  if (activeMacros > 0) {
     warnings.push({
       type: 'dropped-macro',
-      message: `${data.macro.length} macro entries were not imported`,
+      message: `${activeMacros} macro entries were not imported`,
     })
   }
 
