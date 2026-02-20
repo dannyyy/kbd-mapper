@@ -5,6 +5,7 @@ import { parseQmkInfo } from './qmk-info'
 import { parseKle } from './kle'
 import { parseViaDefinition } from './via-definition'
 import { parseViaBackup } from './via-backup'
+import { parseVial } from './vial'
 import { parseZmkKeymap } from './zmk-keymap'
 
 export { detectFormat } from './detect'
@@ -19,6 +20,7 @@ export const FORMAT_LABELS: Record<ImportFormat, string> = {
   'qmk-info': 'QMK Keyboard Info',
   'via-definition': 'VIA/VIAL Definition',
   'via-backup': 'VIA Keymap Backup',
+  vial: 'VIAL Saved Layout',
   'zmk-keymap': 'ZMK Keymap',
   kle: 'KLE Layout',
   unknown: 'Unknown',
@@ -36,6 +38,7 @@ export const FORMAT_PROVIDES: Record<
   'qmk-info': { layout: true, keymap: false },
   'via-definition': { layout: true, keymap: false },
   'via-backup': { layout: false, keymap: true },
+  vial: { layout: false, keymap: true },
   'zmk-keymap': { layout: false, keymap: true },
   kle: { layout: true, keymap: false },
 }
@@ -57,6 +60,8 @@ export function importFile(content: string, filename: string, format?: ImportFor
       return parseViaDefinition(content)
     case 'via-backup':
       return parseViaBackup(content)
+    case 'vial':
+      return parseVial(content)
     case 'zmk-keymap':
       return parseZmkKeymap(content)
     case 'kbd-mapper':
@@ -67,7 +72,7 @@ export function importFile(content: string, filename: string, format?: ImportFor
       }
     default:
       throw new Error(
-        'Unrecognized file format. Supported formats: QMK keymap.json, QMK info.json, VIA/VIAL definition, VIA backup, ZMK .keymap, KLE JSON.',
+        'Unrecognized file format. Supported formats: QMK keymap.json, QMK info.json, VIA/VIAL definition, VIA backup, VIAL .vil, ZMK .keymap, KLE JSON.',
       )
   }
 }

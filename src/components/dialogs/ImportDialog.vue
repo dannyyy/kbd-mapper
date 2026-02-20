@@ -49,7 +49,7 @@ function handleClose() {
 function handleFileSelect() {
   const input = document.createElement('input')
   input.type = 'file'
-  input.accept = '.json,.keymap'
+  input.accept = '.json,.keymap,.vil'
   input.onchange = async (e) => {
     const file = (e.target as HTMLInputElement).files?.[0]
     if (file) await processFile(file)
@@ -196,6 +196,7 @@ const formatOptions = computed(() => [
   { value: 'qmk-info' as const, label: 'QMK Keyboard Info (.json)' },
   { value: 'via-definition' as const, label: 'VIA/VIAL Definition (.json)' },
   { value: 'via-backup' as const, label: 'VIA Keymap Backup (.json)' },
+  { value: 'vial' as const, label: 'VIAL Saved Layout (.vil)' },
   { value: 'zmk-keymap' as const, label: 'ZMK Keymap (.keymap)' },
   { value: 'kle' as const, label: 'KLE Layout (.json)' },
 ])
@@ -236,7 +237,7 @@ const keyCountMismatch = computed(() => {
           </svg>
         </div>
         <span class="drop-text">Drop file here or click to browse</span>
-        <span class="drop-hint">.json or .keymap</span>
+        <span class="drop-hint">.json, .keymap, or .vil</span>
       </div>
 
       <div class="format-section">

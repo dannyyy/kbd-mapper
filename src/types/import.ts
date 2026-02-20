@@ -7,6 +7,7 @@ export type ImportFormat =
   | 'qmk-info'
   | 'via-definition'
   | 'via-backup'
+  | 'vial'
   | 'zmk-keymap'
   | 'kle'
   | 'unknown'

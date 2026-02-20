@@ -10,6 +10,11 @@ export function detectFormat(content: string, filename: string): ImportFormat {
     return 'zmk-keymap'
   }
 
+  // VIAL saved layout files use .vil extension
+  if (filename.endsWith('.vil')) {
+    return 'vial'
+  }
+
   // Try to parse as JSON
   let json: unknown
   try {
@@ -75,6 +80,14 @@ export function detectFormat(content: string, filename: string): ImportFormat {
       (firstLayer.length === 0 || typeof firstLayer[0] === 'number')
     ) {
       return 'via-backup'
+    }
+  }
+
+  // VIAL saved layout: has "version", "uid", and "layout" as 3D array [layer][row][col]
+  if (isRecord(json) && 'uid' in json && 'version' in json && Array.isArray(json.layout)) {
+    const firstLayer = json.layout[0]
+    if (Array.isArray(firstLayer) && Array.isArray(firstLayer[0])) {
+      return 'vial'
     }
   }
 
