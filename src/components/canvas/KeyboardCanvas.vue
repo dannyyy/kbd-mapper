@@ -22,6 +22,8 @@ const touchState = ref<{
   startDistance: number
   lastCenter: { x: number; y: number }
   mode: 'none' | 'pan' | 'pinch'
+  tapStartPos: { x: number; y: number } | null
+  tapStartTime: number
 }>({
   active: false,
   startPan: { x: 0, y: 0 },
@@ -29,6 +31,8 @@ const touchState = ref<{
   startDistance: 0,
   lastCenter: { x: 0, y: 0 },
   mode: 'none',
+  tapStartPos: null,
+  tapStartTime: 0,
 })
 
 const background = computed(() => themeStore.currentTheme.colors.background)
@@ -90,7 +94,7 @@ function getTouchCenter(t1: Touch, t2: Touch): { x: number; y: number } {
 
 function handleTouchStart(e: TouchEvent) {
   if (e.touches.length === 1) {
-    // Single finger: pan
+    // Single finger: pan (and potential tap)
     const touch = e.touches[0]!
     touchState.value = {
       active: true,
@@ -102,9 +106,11 @@ function handleTouchStart(e: TouchEvent) {
       startDistance: 0,
       lastCenter: { x: touch.clientX, y: touch.clientY },
       mode: 'pan',
+      tapStartPos: { x: touch.clientX, y: touch.clientY },
+      tapStartTime: Date.now(),
     }
   } else if (e.touches.length === 2) {
-    // Two fingers: pinch-to-zoom
+    // Two fingers: pinch-to-zoom (cancel any tap)
     const t1 = e.touches[0]!
     const t2 = e.touches[1]!
     const distance = getTouchDistance(t1, t2)
@@ -116,12 +122,24 @@ function handleTouchStart(e: TouchEvent) {
       startDistance: distance,
       lastCenter: center,
       mode: 'pinch',
+      tapStartPos: null,
+      tapStartTime: 0,
     }
   }
 }
 
 function handleTouchMove(e: TouchEvent) {
   if (!touchState.value.active) return
+
+  // Cancel tap if finger moved significantly
+  if (touchState.value.tapStartPos && e.touches.length === 1) {
+    const touch = e.touches[0]!
+    const dx = touch.clientX - touchState.value.tapStartPos.x
+    const dy = touch.clientY - touchState.value.tapStartPos.y
+    if (dx * dx + dy * dy > 100) {
+      touchState.value.tapStartPos = null
+    }
+  }
 
   if (touchState.value.mode === 'pan' && e.touches.length === 1) {
     const touch = e.touches[0]!
@@ -141,8 +159,28 @@ function handleTouchMove(e: TouchEvent) {
 
 function handleTouchEnd(e: TouchEvent) {
   if (e.touches.length === 0) {
+    // Check if this was a tap (minimal movement, short duration)
+    if (touchState.value.tapStartPos) {
+      const elapsed = Date.now() - touchState.value.tapStartTime
+      if (elapsed < 300) {
+        const { x, y } = touchState.value.tapStartPos
+        const el = document.elementFromPoint(x, y)
+        if (el) {
+          el.dispatchEvent(
+            new MouseEvent('click', {
+              bubbles: true,
+              cancelable: true,
+              clientX: x,
+              clientY: y,
+              view: window,
+            }),
+          )
+        }
+      }
+    }
     touchState.value.active = false
     touchState.value.mode = 'none'
+    touchState.value.tapStartPos = null
   } else if (e.touches.length === 1 && touchState.value.mode === 'pinch') {
     // Went from 2 fingers to 1: switch to pan
     const touch = e.touches[0]!
@@ -156,6 +194,8 @@ function handleTouchEnd(e: TouchEvent) {
       startDistance: 0,
       lastCenter: { x: touch.clientX, y: touch.clientY },
       mode: 'pan',
+      tapStartPos: null,
+      tapStartTime: 0,
     }
   }
 }
@@ -223,7 +263,7 @@ onMounted(() => {
     <div class="canvas-viewport" :style="canvasStyle">
       <KeyboardRenderer />
     </div>
-    <div class="canvas-controls-wrapper">
+    <div class="canvas-controls-wrapper" @touchstart.stop @touchend.stop @touchmove.stop>
       <CanvasControls />
     </div>
   </div>
