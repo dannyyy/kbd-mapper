@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { useProjectStore } from '../../stores/project'
 import { useEditorStore } from '../../stores/editor'
+import { useMobile } from '../../composables/useMobile'
 import { downloadText } from '../../utils/download'
 
 const projectStore = useProjectStore()
 const editorStore = useEditorStore()
+const { isMobileLandscape } = useMobile()
 
 function handleSave() {
   const json = projectStore.getProjectJson()
@@ -33,7 +35,7 @@ function handleLoad() {
 </script>
 
 <template>
-  <div class="project-toolbar">
+  <div v-if="!isMobileLandscape" class="project-toolbar">
     <button class="toolbar-btn" @click="projectStore.resetProject" title="New project">New</button>
     <button class="toolbar-btn" @click="handleSave" title="Save project as JSON">Save</button>
     <button class="toolbar-btn" @click="handleLoad" title="Load project from JSON">Load</button>

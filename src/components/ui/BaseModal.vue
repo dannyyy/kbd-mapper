@@ -49,12 +49,27 @@ function handleOverlayClick(e: MouseEvent) {
   background: var(--surface, #fff);
   border-radius: 12px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-  min-width: 400px;
+  min-width: min(400px, 92vw);
   max-width: 90vw;
   max-height: 80vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+}
+
+@media (pointer: coarse) and (max-height: 500px) {
+  .modal-container {
+    max-height: 90vh;
+    border-radius: 8px;
+  }
+
+  .modal-header {
+    padding: 10px 14px;
+  }
+
+  .modal-body {
+    padding: 14px;
+  }
 }
 
 .modal-header {
