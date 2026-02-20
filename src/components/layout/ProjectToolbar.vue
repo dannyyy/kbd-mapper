@@ -14,23 +14,8 @@ function handleSave() {
   projectStore.markKeymapSaved()
 }
 
-function handleLoad() {
-  const input = document.createElement('input')
-  input.type = 'file'
-  input.accept = '.json'
-  input.onchange = async (e) => {
-    const file = (e.target as HTMLInputElement).files?.[0]
-    if (!file) return
-    try {
-      const text = await file.text()
-      const data = JSON.parse(text)
-      projectStore.loadProject(data)
-    } catch (err) {
-      console.error('Failed to load project:', err)
-      alert("Failed to load project file. Make sure it's a valid JSON file.")
-    }
-  }
-  input.click()
+function handleImport() {
+  editorStore.showImportDialog = true
 }
 </script>
 
@@ -38,7 +23,9 @@ function handleLoad() {
   <div v-if="!isMobileLandscape" class="project-toolbar">
     <button class="toolbar-btn" @click="projectStore.resetProject" title="New project">New</button>
     <button class="toolbar-btn" @click="handleSave" title="Save project as JSON">Save</button>
-    <button class="toolbar-btn" @click="handleLoad" title="Load project from JSON">Load</button>
+    <button class="toolbar-btn" @click="handleImport" title="Import keymap or layout">
+      Import
+    </button>
     <div class="separator" />
     <button
       class="toolbar-btn"

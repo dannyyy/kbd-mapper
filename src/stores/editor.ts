@@ -7,6 +7,7 @@ export const useEditorStore = defineStore('editor', () => {
   const canvasZoom = ref(1)
   const canvasPan = ref({ x: 0, y: 0 })
   const showExportDialog = ref(false)
+  const showImportDialog = ref(false)
   const showThemeSelector = ref(false)
   const showLayoutSelector = ref(false)
   const showProjectDialog = ref(false)
@@ -70,6 +71,7 @@ export const useEditorStore = defineStore('editor', () => {
     canvasZoom,
     canvasPan,
     showExportDialog,
+    showImportDialog,
     showThemeSelector,
     showLayoutSelector,
     showProjectDialog,

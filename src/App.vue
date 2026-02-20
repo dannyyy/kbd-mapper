@@ -9,6 +9,7 @@ import ProjectToolbar from './components/layout/ProjectToolbar.vue'
 import MainWorkspace from './components/layout/MainWorkspace.vue'
 import ThemeSelector from './components/dialogs/ThemeSelector.vue'
 import ExportDialog from './components/dialogs/ExportDialog.vue'
+import ImportDialog from './components/dialogs/ImportDialog.vue'
 import LayoutSelector from './components/dialogs/LayoutSelector.vue'
 
 const editorStore = useEditorStore()
@@ -30,6 +31,10 @@ function handleKeydown(e: KeyboardEvent) {
 
   // Escape: close dialogs or deselect
   if (e.key === 'Escape') {
+    if (editorStore.showImportDialog) {
+      editorStore.showImportDialog = false
+      return
+    }
     if (editorStore.sidebarOpen) {
       editorStore.closeSidebar()
       return
@@ -58,6 +63,13 @@ function handleKeydown(e: KeyboardEvent) {
     const json = projectStore.getProjectJson()
     downloadText(json, `${projectStore.project.name}.json`, 'application/json')
     projectStore.markKeymapSaved()
+    return
+  }
+
+  // Cmd+I: import dialog
+  if (meta && e.key === 'i') {
+    e.preventDefault()
+    editorStore.showImportDialog = true
     return
   }
 
@@ -104,6 +116,7 @@ onUnmounted(() => {
     <!-- Dialogs -->
     <ThemeSelector />
     <ExportDialog />
+    <ImportDialog />
     <LayoutSelector />
 
     <!-- Portrait rotation prompt -->
