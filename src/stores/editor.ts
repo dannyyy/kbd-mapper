@@ -12,6 +12,7 @@ export const useEditorStore = defineStore('editor', () => {
   const showLayoutSelector = ref(false)
   const showProjectDialog = ref(false)
   const sidebarTab = ref<'layers' | 'key'>('layers')
+  const sidebarOpen = ref(false)
 
   const hasSelection = computed(() => selectedKeyIndex.value !== null)
 
@@ -20,6 +21,19 @@ export const useEditorStore = defineStore('editor', () => {
     if (index !== null) {
       sidebarTab.value = 'key'
     }
+  }
+
+  function toggleSidebar() {
+    sidebarOpen.value = !sidebarOpen.value
+  }
+
+  function openSidebar(tab?: 'layers' | 'key') {
+    sidebarOpen.value = true
+    if (tab) sidebarTab.value = tab
+  }
+
+  function closeSidebar() {
+    sidebarOpen.value = false
   }
 
   function clearSelection() {
@@ -62,9 +76,13 @@ export const useEditorStore = defineStore('editor', () => {
     showLayoutSelector,
     showProjectDialog,
     sidebarTab,
+    sidebarOpen,
     hasSelection,
     selectKey,
     clearSelection,
+    toggleSidebar,
+    openSidebar,
+    closeSidebar,
     setActiveLayer,
     setZoom,
     zoomIn,
