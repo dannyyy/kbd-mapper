@@ -15,7 +15,7 @@
     "typecheck": "vue-tsc -b"
   },
   "dependencies": {
-    "jspdf": "^4.1.0",
+    "jspdf": "^4.2.0",
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",
     "svg2pdf.js": "^2.7.0",
